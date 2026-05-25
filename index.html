@@ -68,29 +68,33 @@
 </head>
 <body class="flex flex-col min-h-screen text-slate-900">
 <!-- BEGIN: MainHeader -->
-<header class="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4" data-purpose="global-navigation">
-<div class="flex items-center gap-4 w-full sm:w-auto">
+<header class="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between gap-4" data-purpose="global-navigation">
+<div class="flex items-center gap-4">
 <button onclick="showScreen('home')" aria-label="Home" class="flex items-center justify-center">
 <img alt="LM Auto Deals Logo" class="h-10 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCenSJ_T-XXlj-Veyo3KF6SCjZXxVeKlMGnCWnVoLLJvRfuCqJ1seIUzskKWGel5tZDo30pdDrPvjBuvlB4X4_gGVb7qJrGCRP4g5OrT_qik8Kt_kUsgS0ys6guifvLbHbsOCgFD5wkfv_m09acPRWFcL2zWTpUGO45pwlLmO7KsqjQ-75pNDmRNJ9JUbz10VYLRlESTbOKmpNSZTdmfq_hehVb8a8VacRIb1ElOqg8sU37HEw-YGodXiQPOhdQySgKqM9j6MiZT2f9"/>
 </button>
 </div>
-<nav class="flex items-center gap-4 w-full sm:w-auto justify-center">
+<nav class="hidden sm:flex items-center gap-4 justify-center flex-1">
 <button onclick="showScreen('cars')" class="text-sm font-semibold text-slate-700 hover:text-black">Cars</button>
 <button onclick="showScreen('lubricants')" class="text-sm font-semibold text-slate-700 hover:text-black">Lubricants</button>
 <button onclick="showScreen('about')" class="text-sm font-semibold text-slate-700 hover:text-black">About Us</button>
 </nav>
-</nav>
+<div class="flex items-center gap-4">
 <div id="headerCartButton" class="w-10 flex justify-end hidden">
   <button onclick="showCart()" aria-label="Shopping Cart" class="p-1 text-2xl relative">
     🛒
     <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
   </button>
 </div>
+<button onclick="toggleMenu()" aria-label="Menu" class="sm:hidden p-2 text-2xl">
+  ☰
+</button>
+</div>
 </header>
 <!-- END: MainHeader -->
 
 <!-- Sidebar Menu -->
-<div id="sideMenu" class="fixed inset-0 z-[60] transform -translate-x-full transition-transform duration-300 ease-in-out hidden">
+<div id="sideMenu" class="fixed inset-0 z-[60] transform -translate-x-full transition-transform duration-300 ease-in-out">
 <div class="absolute inset-0 bg-black/20" onclick="toggleMenu()"></div>
 <nav class="relative w-72 h-full bg-white shadow-2xl p-8 flex flex-col gap-6">
 <div class="flex justify-between items-center mb-4">
@@ -497,7 +501,6 @@ function toggleMenu() {
   if (!menu) return;
   menu.classList.toggle('-translate-x-full');
   menu.classList.toggle('translate-x-0');
-  menu.classList.toggle('hidden');
 }
 
 // Cart functionality
