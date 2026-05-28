@@ -13,7 +13,7 @@
   let current = slides.findIndex((s) => s.classList.contains('active'));
   if (current < 0) current = 0;
 
-  const AUTO_MS = 6000;
+  const AUTO_MS = 2000;
   let autoTimer = null;
 
   function applyTint(index) {
