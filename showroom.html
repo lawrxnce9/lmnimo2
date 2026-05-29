@@ -1,23 +1,1134 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Showroom — LM AUTO DEALS</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"/>
   <style>
-    .showroom-page{min-height:100vh;background:#0d1220;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:#fff}
-    .showroom-page h1{font-family:'Times New Roman',Georgia,serif;font-style:italic;font-size:clamp(2rem,6vw,4rem);letter-spacing:-0.02em;margin:0 0 12px;color:#c9a84c}
-    .showroom-page p{color:rgba(255,255,255,0.55);font-size:1rem;letter-spacing:0.15em;text-transform:uppercase;margin:0 0 40px}
-    .back-btn{display:inline-block;padding:10px 28px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;color:#fff;text-decoration:none;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;transition:background 0.2s,border-color 0.2s}
-    .back-btn:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.5)}
+    /* ── Header ── */
+    .sr-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 60px;
+    }
+    .sr-back {
+      display: inline-block;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .sr-back:hover { opacity: 0.8; transform: translateX(-2px); }
+    .sr-back img {
+      display: block;
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+    }
+    .sr-logo {
+      font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+    }
+
+    /* ── Search section ── */
+    .sr-search-section {
+      background: var(--bg);
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sr-search-section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .sr-search-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: block;
+    }
+    .sr-search-box {
+      position: relative;
+    }
+    .sr-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+      display: flex;
+    }
+    .sr-search-icon svg { width: 18px; height: 18px; }
+    .sr-search-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 44px 0 48px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .sr-search-input::placeholder { color: #aaa; }
+    .sr-search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(27,109,214,0.1);
+    }
+    .sr-search-clear {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 1rem;
+      padding: 4px;
+      line-height: 1;
+      border-radius: 50%;
+      transition: color 0.15s, background 0.15s;
+    }
+    .sr-search-clear:hover { color: var(--text); background: var(--border); }
+    .sr-search-clear.hidden { display: none; }
+
+    /* Suggestions dropdown */
+    .sr-suggestions {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      z-index: 200;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .sr-suggestions.hidden { display: none; }
+    .sr-suggestions-group { padding: 8px 0; }
+    .sr-suggestions-group:not(:last-child) { border-bottom: 1px solid var(--border); }
+    .sr-suggestions-heading {
+      padding: 6px 16px 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .sr-suggestion-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text);
+      transition: background 0.1s;
+    }
+    .sr-suggestion-item:hover, .sr-suggestion-item.focused {
+      background: #f4f7ff;
+    }
+    .sr-suggestion-item span { color: var(--muted); font-size: 0.8rem; }
+
+    /* Search result meta */
+    .sr-search-meta {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    /* ── Page intro ── */
+    .sr-intro {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .sr-intro h1 {
+      margin: 0 0 6px;
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+    }
+    .sr-intro p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .sr-count {
+      font-size: 0.85rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── Filters ── */
+    .sr-filters {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.825rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* ── Grid ── */
+    .sr-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4px 24px 72px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    /* ── Card ── */
+    .sr-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s;
+    }
+    .sr-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(27,109,214,0.1);
+      transform: translateY(-2px);
+    }
+    .sr-card:active { transform: scale(0.99); }
+    .sr-card__img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      background: #f3f4f5;
+    }
+    .sr-card__body { padding: 16px 18px 18px; }
+    .sr-card__tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 7px;
+    }
+    .sr-card__name {
+      margin: 0 0 3px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.1px;
+    }
+    .sr-card__spec {
+      margin: 0 0 16px;
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+    .sr-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .sr-card__price {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .sr-card__cta {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: opacity 0.15s;
+    }
+    .sr-card__cta:hover { opacity: 0.75; }
+
+    /* ── Empty / request state ── */
+    .sr-empty {
+      display: none;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 56px 24px;
+    }
+    .sr-empty-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+    .sr-empty h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .sr-empty p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .sr-request-btn {
+      display: inline-block;
+      padding: 10px 24px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: background 0.15s;
+    }
+    .sr-request-btn:hover { background: #1555c0; }
+
+    /* ── Footer ── */
+    .sr-footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    .sr-footer a { color: var(--accent); text-decoration: none; }
+    .sr-footer a:hover { text-decoration: underline; }
+
+    /* ── About Us ── */
+    .sr-about {
+      position: relative;
+      width: 100%;
+      min-height: 420px;
+      background-image: url('images/homepage/IMG_2040 copy.PNG');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .sr-about__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.58);
+    }
+    .sr-about__content {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      padding: 64px 32px;
+      color: #fff;
+    }
+    .sr-about__eyebrow {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 14px;
+    }
+    .sr-about__heading {
+      font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: normal;
+      line-height: 1.25;
+      margin: 0 0 18px;
+      letter-spacing: 0.01em;
+    }
+    .sr-about__body {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.8);
+      margin: 0 auto;
+      max-width: 520px;
+    }
+    .sr-about__divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(255,255,255,0.35);
+      margin: 20px auto;
+    }
+    .sr-footer-motto {
+      margin: 0 0 10px;
+      font-family: Palatino, 'Palatino Linotype', Georgia, serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: 0.03em;
+    }
+    .sr-footer-ig, .sr-footer-tt, .sr-footer-em {
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .sr-footer-ig:hover { color: #c13584; text-decoration: none; }
+    .sr-footer-tt:hover { color: #010101; text-decoration: none; }
+    .sr-footer-em:hover { color: var(--accent); text-decoration: none; }
+    .sr-ig-icon, .sr-tt-icon, .sr-em-icon { width: 20px; height: 20px; vertical-align: middle; }
+
+    /* ── Inquiry Modal ── */
+    .inq-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .inq-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .inq-modal {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      transform: translateY(20px) scale(0.98);
+      transition: transform 0.25s ease;
+    }
+    .inq-backdrop.open .inq-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Modal header */
+    .inq-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 24px 24px 0;
+      gap: 12px;
+    }
+    .inq-car-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #f0f5ff;
+      border: 1px solid #d0e0ff;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+    .inq-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 0 0 4px;
+    }
+    .inq-subtitle {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .inq-close {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      font-size: 1rem;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      line-height: 1;
+    }
+    .inq-close:hover { background: var(--border); color: var(--text); }
+
+    /* Modal body */
+    .inq-body {
+      padding: 20px 24px 24px;
+    }
+    .inq-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 24px 20px;
+    }
+    .inq-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .inq-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+    .inq-field.full { grid-column: 1 / -1; }
+    .inq-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .inq-label .req { color: var(--accent); margin-left: 2px; }
+    .inq-input, .inq-select, .inq-textarea {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+    .inq-input:focus, .inq-select:focus, .inq-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(27,109,214,0.1);
+    }
+    .inq-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+    .inq-textarea {
+      resize: vertical;
+      min-height: 110px;
+      line-height: 1.5;
+    }
+
+    /* Send button */
+    .inq-send {
+      width: 100%;
+      height: 50px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      transition: background 0.15s, transform 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .inq-send:hover { background: #1555c0; }
+    .inq-send:active { transform: scale(0.99); }
+    .inq-send svg { width: 18px; height: 18px; }
+
+    .inq-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    /* Card clickable */
+    .sr-card { cursor: pointer; }
+
+    @media (max-width: 540px) {
+      .inq-modal { border-radius: 20px 20px 0 0; max-height: 95vh; }
+      .inq-backdrop { align-items: flex-end; padding: 0; }
+      .inq-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .sr-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .sr-header { padding: 0 16px; }
+      .sr-search-section { padding: 20px 16px 16px; }
+      .sr-intro { padding: 24px 16px 16px; flex-direction: column; align-items: flex-start; }
+      .sr-filters { padding: 16px; }
+      .sr-grid { grid-template-columns: 1fr; padding: 4px 16px 60px; }
+    }
   </style>
 </head>
 <body>
-  <div class="showroom-page">
-    <h1>The Showroom</h1>
-    <p>Turning Dreams Into Drive</p>
-    <a href="index.html" class="back-btn">← Back to Home</a>
+
+  <!-- Header -->
+  <header class="sr-header">
+    <a class="sr-back" href="index.html">
+      <img src="images/homepage/IMG_2037 copy.PNG" alt="Back"/>
+    </a>
+    <span class="sr-logo">LM AUTODEALS</span>
+    <div style="width:52px"></div>
+  </header>
+
+  <main>
+
+    <!-- Search -->
+    <div class="sr-search-section">
+      <div class="sr-search-section-inner">
+        <span class="sr-search-label">Search any car in the world</span>
+        <div class="sr-search-box">
+          <span class="sr-search-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </span>
+          <input type="text" id="searchInput" class="sr-search-input" placeholder="Brand, model or year — e.g. Porsche 911, BMW 2024…" autocomplete="off"/>
+          <button class="sr-search-clear hidden" id="clearBtn" aria-label="Clear search">✕</button>
+          <div class="sr-suggestions hidden" id="suggestions"></div>
+        </div>
+        <div class="sr-search-meta" id="searchMeta"></div>
+      </div>
+    </div>
+
+    <!-- Intro -->
+    
+
+   
+    <!-- About Us -->
+    <section class="sr-about">
+      <div class="sr-about__overlay"></div>
+      <div class="sr-about__content">
+        <p class="sr-about__eyebrow">About Us</p>
+        <h2 class="sr-about__heading">Turning Dreams Into Drive</h2>
+        <div class="sr-about__divider"></div>
+        <p class="sr-about__body">
+          LM Auto Deals is a personal car shopper and global vehicle curator serving clients across Ghana and the United States. We source the world's finest automobiles from everyday luxury to ultra-rare supercars and handle every detail from search to delivery so you don't have to.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Inquiry Modal ── -->
+  <div class="inq-backdrop" id="inqBackdrop" role="dialog" aria-modal="true" aria-labelledby="inqTitle">
+    <div class="inq-modal" id="inqModal">
+
+      <div class="inq-header">
+        <div>
+          <div class="inq-car-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-3"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+            <span id="inqCarBadge">Vehicle Inquiry</span>
+          </div>
+          <h2 class="inq-title" id="inqTitle">Make an Enquiry</h2>
+          <p class="inq-subtitle">Fill in your details and we'll get back to you within 24 hours.</p>
+        </div>
+        <button class="inq-close" id="inqClose" aria-label="Close">✕</button>
+      </div>
+
+      <div class="inq-divider"></div>
+
+      <div class="inq-body">
+        <form id="inqForm" novalidate>
+
+          <div class="inq-row">
+            <div class="inq-field">
+              <label class="inq-label" for="inqName">Full Name <span class="req">*</span></label>
+              <input class="inq-input" id="inqName" type="text" placeholder="John Smith" required/>
+            </div>
+            <div class="inq-field">
+              <label class="inq-label" for="inqEmail">Email Address <span class="req">*</span></label>
+              <input class="inq-input" id="inqEmail" type="email" placeholder="john@email.com" required/>
+            </div>
+          </div>
+
+          <div class="inq-row">
+            <div class="inq-field">
+              <label class="inq-label" for="inqPhone">Phone Number</label>
+              <input class="inq-input" id="inqPhone" type="tel" placeholder="+1 555 000 0000"/>
+            </div>
+            <div class="inq-field">
+              <label class="inq-label" for="inqBudget">Budget Range</label>
+              <select class="inq-select" id="inqBudget">
+                <option value="">Select range…</option>
+                <option>Under $50,000</option>
+                <option>$50,000 – $100,000</option>
+                <option>$100,000 – $200,000</option>
+                <option>$200,000 – $500,000</option>
+                <option>$500,000+</option>
+                <option>Open to discussion</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="inq-row">
+            <div class="inq-field">
+              <label class="inq-label" for="inqVehicle">Vehicle of Interest <span class="req">*</span></label>
+              <input class="inq-input" id="inqVehicle" type="text" placeholder="e.g. Rolls-Royce Ghost" required/>
+            </div>
+            <div class="inq-field">
+              <label class="inq-label" for="inqYear">Preferred Year</label>
+              <select class="inq-select" id="inqYear">
+                <option value="">Any year…</option>
+                <option>2025</option><option>2024</option><option>2023</option>
+                <option>2022</option><option>2021</option><option>2020</option>
+                <option>2019</option><option>2018</option><option>Pre-2018</option>
+                <option>Open to any</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="inq-field">
+            <label class="inq-label" for="inqColor">Preferred Colour / Spec</label>
+            <input class="inq-input" id="inqColor" type="text" placeholder="e.g. Midnight Black, Tan interior, Panoramic roof…"/>
+          </div>
+
+          <div class="inq-field">
+            <label class="inq-label" for="inqMessage">Your Message <span class="req">*</span></label>
+            <textarea class="inq-textarea" id="inqMessage" placeholder="Describe what you're looking for — trim level, mileage preference, any specific features, timeline, etc." required></textarea>
+          </div>
+
+          <button class="inq-send" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Enquiry
+          </button>
+
+          <p class="inq-note">This will open your email client with the enquiry pre-filled. No data is stored on this site.</p>
+
+        </form>
+      </div>
+    </div>
   </div>
+
+  <footer class="sr-footer">
+    <p class="sr-footer-motto">Turning Dreams Into Drive 🏎️</p>
+    <a class="sr-footer-em" href="mailto:lmautodeals1@gmail.com" aria-label="Email us">
+      <svg class="sr-em-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="M2 7l10 7 10-7"/>
+      </svg>
+    </a>
+    &nbsp;·&nbsp;
+    <a class="sr-footer-tt" href="https://www.tiktok.com/@lm_autodeals?_r=1&_t=ZS-96ksG3uw8u8" target="_blank" rel="noopener noreferrer" aria-label="Follow us on TikTok">
+      <svg class="sr-tt-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+      </svg>
+    </a>
+    &nbsp;·&nbsp;
+    <a class="sr-footer-ig" href="https://www.instagram.com/lm_autodeals" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+      <svg class="sr-ig-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+    </a>
+  </footer>
+
+<script>
+// ── Comprehensive car database ──────────────────────────────────────────────
+const carDB = [
+  { brand: "Acura",           models: ["ILX","TLX","RDX","MDX","NSX","Integra"] },
+  { brand: "Alfa Romeo",      models: ["Giulia","Stelvio","Tonale","GTV","Spider"] },
+  { brand: "Alpina",          models: ["B3","B4","B5","B7","B8","XB7"] },
+  { brand: "Aston Martin",    models: ["DB11","DB12","Vantage","DBS","DBX","Valkyrie","Vanquish"] },
+  { brand: "Audi",            models: ["A3","A4","A5","A6","A7","A8","Q3","Q5","Q7","Q8","R8","RS3","RS4","RS5","RS6","RS7","RS Q8","TT","e-tron GT"] },
+  { brand: "Bentley",         models: ["Continental GT","Flying Spur","Bentayga","Mulsanne","Bacalar"] },
+  { brand: "BMW",             models: ["1 Series","2 Series","3 Series","4 Series","5 Series","6 Series","7 Series","8 Series","X1","X2","X3","X4","X5","X6","X7","M2","M3","M4","M5","M8","Z4","i4","i7","iX","XM"] },
+  { brand: "Bugatti",         models: ["Chiron","Veyron","Divo","Bolide","Mistral","Tourbillon"] },
+  { brand: "Buick",           models: ["Enclave","Envision","Encore","LaCrosse","Envista"] },
+  { brand: "BYD",             models: ["Han","Tang","Seal","Dolphin","Atto 3","Yangwang U8"] },
+  { brand: "Cadillac",        models: ["CT4","CT5","Escalade","XT4","XT5","XT6","Lyriq","Celestiq"] },
+  { brand: "Chevrolet",       models: ["Camaro","Corvette","Silverado","Tahoe","Suburban","Equinox","Blazer","Traverse","Malibu","Trax"] },
+  { brand: "Chrysler",        models: ["300","Pacifica","Voyager"] },
+  { brand: "Citroën",         models: ["C3","C4","C5 X","DS9","Berlingo"] },
+  { brand: "Dodge",           models: ["Charger","Challenger","Durango","Hornet","Ram"] },
+  { brand: "Ferrari",         models: ["296 GTB","296 GTS","Roma","SF90","F8 Tributo","Purosangue","812 Superfast","LaFerrari","Daytona SP3"] },
+  { brand: "Fiat",            models: ["500","Panda","Tipo","500X","500L"] },
+  { brand: "Ford",            models: ["Mustang","F-150","Explorer","Bronco","Ranger","Escape","Edge","Expedition","GT","Raptor","Maverick"] },
+  { brand: "Genesis",         models: ["G70","G80","G90","GV70","GV80","GV60","Electrified G80"] },
+  { brand: "GMC",             models: ["Sierra","Yukon","Canyon","Acadia","Terrain","Hummer EV","Envoy"] },
+  { brand: "Honda",           models: ["Civic","Accord","CR-V","Pilot","HR-V","Odyssey","Ridgeline","Passport","NSX"] },
+  { brand: "Hyundai",         models: ["Elantra","Sonata","Tucson","Santa Fe","Palisade","Kona","Ioniq 5","Ioniq 6","Nexo"] },
+  { brand: "Infiniti",        models: ["Q50","Q60","QX50","QX55","QX60","QX80"] },
+  { brand: "Jaguar",          models: ["XE","XF","F-Type","E-Pace","F-Pace","I-Pace","XJ"] },
+  { brand: "Jeep",            models: ["Wrangler","Grand Cherokee","Cherokee","Compass","Renegade","Gladiator","Wagoneer","Grand Wagoneer"] },
+  { brand: "Kia",             models: ["K5","Stinger","Sportage","Sorento","Telluride","EV6","EV9","Carnival","Niro"] },
+  { brand: "Koenigsegg",      models: ["Agera","Regera","Jesko","Gemera","CC850","Absolut"] },
+  { brand: "Lamborghini",     models: ["Huracán","Urus","Revuelto","Sián","Centenario","Diablo","Gallardo","Murcielago"] },
+  { brand: "Land Rover",      models: ["Defender","Discovery","Discovery Sport","Range Rover","Range Rover Sport","Range Rover Velar","Range Rover Evoque"] },
+  { brand: "Lexus",           models: ["IS","ES","GS","LS","NX","RX","GX","LX","LC","RC","UX","RZ","LFA"] },
+  { brand: "Lincoln",         models: ["Corsair","Nautilus","Aviator","Navigator","Zephyr"] },
+  { brand: "Lotus",           models: ["Emira","Eletre","Evija","Elise","Exige","Evora","Esprit"] },
+  { brand: "Lucid",           models: ["Air Pure","Air Touring","Air Grand Touring","Air Sapphire","Gravity"] },
+  { brand: "Maserati",        models: ["Ghibli","Quattroporte","Levante","GranTurismo","MC20","Grecale"] },
+  { brand: "Maybach",         models: ["S 580","S 680","GLS 600","EQS 680","Zeppelin"] },
+  { brand: "Mazda",           models: ["Mazda3","Mazda6","CX-3","CX-5","CX-50","CX-60","CX-90","MX-5 Miata","MX-30","RX-7","RX-8"] },
+  { brand: "McLaren",         models: ["720S","750S","765LT","Artura","GT","P1","Senna","Speedtail","Elva"] },
+  { brand: "Mercedes-Benz",   models: ["A-Class","C-Class","E-Class","S-Class","G-Class","GLA","GLC","GLE","GLS","AMG GT","CLA","CLS","EQS","EQE","AMG G63","AMG C63","AMG E63","SL","SLC"] },
+  { brand: "MINI",            models: ["Cooper","Countryman","Clubman","Paceman","Convertible","Electric"] },
+  { brand: "Mitsubishi",      models: ["Outlander","Eclipse Cross","Pajero","Galant","Lancer","ASX","Mirage"] },
+  { brand: "Nio",             models: ["ET5","ET7","ES6","ES7","ES8","EC7","EP9"] },
+  { brand: "Nissan",          models: ["GT-R","370Z","400Z","Altima","Maxima","Sentra","Rogue","Murano","Pathfinder","Armada","Titan","Leaf","Ariya"] },
+  { brand: "Opel",            models: ["Astra","Insignia","Corsa","Mokka","Grandland","Zafira"] },
+  { brand: "Pagani",          models: ["Huayra","Zonda","Utopia","Imola","BC"] },
+  { brand: "Peugeot",         models: ["208","308","508","2008","3008","5008","RCZ"] },
+  { brand: "Porsche",         models: ["911","718 Boxster","718 Cayman","Macan","Cayenne","Panamera","Taycan","911 GT3","911 Turbo S","911 Carrera","Carrera GTS"] },
+  { brand: "RAM",             models: ["1500","2500","3500","TRX","ProMaster"] },
+  { brand: "Renault",         models: ["Clio","Megane","Captur","Kadjar","Koleos","Zoe","Alpine A110"] },
+  { brand: "Rimac",           models: ["Nevera","C_Two"] },
+  { brand: "Rivian",          models: ["R1T","R1S","R2","R3"] },
+  { brand: "Rolls-Royce",     models: ["Ghost","Phantom","Wraith","Dawn","Cullinan","Spectre","Silver Shadow","Silver Spur"] },
+  { brand: "SEAT",            models: ["Ibiza","Leon","Ateca","Tarraco","Arona"] },
+  { brand: "Skoda",           models: ["Octavia","Superb","Kodiaq","Karoq","Fabia","Enyaq"] },
+  { brand: "Smart",           models: ["#1","#3","ForTwo","ForFour","EQ"] },
+  { brand: "Subaru",          models: ["Impreza","Legacy","Outback","Forester","Crosstrek","Ascent","BRZ","WRX","WRX STI"] },
+  { brand: "Suzuki",          models: ["Swift","Vitara","Jimny","SX4","Ignis","S-Cross","Baleno"] },
+  { brand: "Tesla",           models: ["Model S","Model 3","Model X","Model Y","Cybertruck","Roadster","Semi"] },
+  { brand: "Toyota",          models: ["Camry","Corolla","Supra","GR86","RAV4","Highlander","Sequoia","Tundra","Tacoma","4Runner","Land Cruiser","Prius","Crown","Sienna","Venza"] },
+  { brand: "Vauxhall",        models: ["Astra","Corsa","Insignia","Mokka","Crossland","Grandland"] },
+  { brand: "Volkswagen",      models: ["Golf","Polo","Passat","Arteon","Tiguan","Touareg","ID.3","ID.4","ID.5","ID.7","Touareg","Phaeton","Up"] },
+  { brand: "Volvo",           models: ["S60","S90","V60","V90","XC40","XC60","XC90","C40","EX30","EX90"] },
+  { brand: "Xpeng",           models: ["P5","P7","G3","G6","G9","X9"] },
+  { brand: "Zenvo",           models: ["TSR-S","TS1 GT","Aurora"] },
+];
+
+const YEARS = Array.from({ length: 16 }, (_, i) => String(2025 - i)); // 2025 → 2010
+
+// ── DOM refs ─────────────────────────────────────────────────────────────────
+const searchInput  = document.getElementById('searchInput');
+const clearBtn     = document.getElementById('clearBtn');
+const suggestions  = document.getElementById('suggestions');
+const searchMeta   = document.getElementById('searchMeta');
+const carGrid      = document.getElementById('carGrid');
+const emptyState   = document.getElementById('emptyState');
+const emptyDesc    = document.getElementById('emptyDesc');
+const requestBtn   = document.getElementById('requestBtn');
+const countLabel   = document.getElementById('countLabel');
+const filterBtns   = document.querySelectorAll('.filter-btn');
+const cards        = Array.from(document.querySelectorAll('.sr-card[data-category]'));
+const totalCards   = cards.length;
+
+let activeFilter   = 'all';
+let activeQuery    = '';
+let focusedIdx     = -1;
+let suggestionItems = [];
+
+// ── Suggestion builder ────────────────────────────────────────────────────────
+function buildSuggestions(q) {
+  if (!q) return [];
+  const lower = q.toLowerCase();
+  const results = { brands: [], models: [], years: [] };
+
+  YEARS.forEach(y => {
+    if (y.startsWith(q)) results.years.push(y);
+  });
+
+  carDB.forEach(({ brand, models }) => {
+    if (brand.toLowerCase().includes(lower)) {
+      results.brands.push(brand);
+    }
+    models.forEach(model => {
+      const full = `${brand} ${model}`;
+      if (model.toLowerCase().includes(lower) || full.toLowerCase().includes(lower)) {
+        if (!results.brands.includes(brand + ' — ' + model)) {
+          results.models.push({ label: full, brand, model });
+        }
+      }
+    });
+  });
+
+  return results;
+}
+
+function renderSuggestions(q) {
+  const data = buildSuggestions(q);
+  const hasAny = data.brands.length || data.models.length || data.years.length;
+
+  if (!q || !hasAny) {
+    suggestions.classList.add('hidden');
+    return;
+  }
+
+  let html = '';
+
+  if (data.years.length) {
+    html += `<div class="sr-suggestions-group">
+      <div class="sr-suggestions-heading">Year</div>
+      ${data.years.slice(0, 4).map(y =>
+        `<div class="sr-suggestion-item" data-value="${y}">📅 ${y}</div>`
+      ).join('')}
+    </div>`;
+  }
+
+  if (data.brands.length) {
+    html += `<div class="sr-suggestions-group">
+      <div class="sr-suggestions-heading">Brand</div>
+      ${data.brands.slice(0, 5).map(b =>
+        `<div class="sr-suggestion-item" data-value="${b}">🚘 <strong>${b}</strong></div>`
+      ).join('')}
+    </div>`;
+  }
+
+  if (data.models.length) {
+    html += `<div class="sr-suggestions-group">
+      <div class="sr-suggestions-heading">Model</div>
+      ${data.models.slice(0, 6).map(m =>
+        `<div class="sr-suggestion-item" data-value="${m.label}">🏎️ ${m.label}</div>`
+      ).join('')}
+    </div>`;
+  }
+
+  suggestions.innerHTML = html;
+  suggestions.classList.remove('hidden');
+
+  suggestionItems = Array.from(suggestions.querySelectorAll('.sr-suggestion-item'));
+  focusedIdx = -1;
+
+  suggestionItems.forEach(item => {
+    item.addEventListener('mousedown', e => {
+      e.preventDefault();
+      searchInput.value = item.dataset.value;
+      applySearch(item.dataset.value);
+      suggestions.classList.add('hidden');
+    });
+  });
+}
+
+// ── Filter + search cards ────────────────────────────────────────────────────
+function applySearch(q) {
+  activeQuery = q.trim().toLowerCase();
+  clearBtn.classList.toggle('hidden', !q);
+  updateGrid();
+}
+
+function updateGrid() {
+  let visible = 0;
+
+  cards.forEach(card => {
+    const catMatch  = activeFilter === 'all' || card.dataset.category === activeFilter;
+    const searchStr = card.dataset.search || '';
+    const qMatch    = !activeQuery || searchStr.includes(activeQuery);
+    const show      = catMatch && qMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  const hasQuery = activeQuery.length > 0;
+
+  if (visible === 0) {
+    emptyState.style.display = 'block';
+    if (hasQuery) {
+      const q = searchInput.value.trim();
+      emptyDesc.textContent = `We can source a ${q} for you. Send us a request and we'll get back to you.`;
+      requestBtn.href = `mailto:lawrxnce9@gmail.com?subject=Vehicle Request: ${encodeURIComponent(q)}`;
+    } else {
+      emptyDesc.textContent = `No vehicles match this filter.`;
+      requestBtn.href = `mailto:lawrxnce9@gmail.com?subject=Vehicle Request`;
+    }
+  } else {
+    emptyState.style.display = 'none';
+  }
+
+  const filterLabel = activeFilter === 'all' ? '' : ` · ${activeFilter}`;
+  countLabel.textContent = visible === totalCards
+    ? `${totalCards} vehicles`
+    : `${visible} of ${totalCards} vehicles${filterLabel}`;
+
+  if (hasQuery && visible > 0) {
+    searchMeta.textContent = `${visible} match${visible !== 1 ? 'es' : ''} in current inventory`;
+  } else {
+    searchMeta.textContent = '';
+  }
+}
+
+// ── Events ────────────────────────────────────────────────────────────────────
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value;
+  renderSuggestions(q);
+  applySearch(q);
+});
+
+searchInput.addEventListener('keydown', e => {
+  if (!suggestionItems.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    focusedIdx = (focusedIdx + 1) % suggestionItems.length;
+    suggestionItems.forEach((el, i) => el.classList.toggle('focused', i === focusedIdx));
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    focusedIdx = (focusedIdx - 1 + suggestionItems.length) % suggestionItems.length;
+    suggestionItems.forEach((el, i) => el.classList.toggle('focused', i === focusedIdx));
+  } else if (e.key === 'Enter' && focusedIdx >= 0) {
+    const val = suggestionItems[focusedIdx].dataset.value;
+    searchInput.value = val;
+    applySearch(val);
+    suggestions.classList.add('hidden');
+  } else if (e.key === 'Escape') {
+    suggestions.classList.add('hidden');
+  }
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.sr-search-box')) {
+    suggestions.classList.add('hidden');
+  }
+});
+
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  clearBtn.classList.add('hidden');
+  suggestions.classList.add('hidden');
+  searchMeta.textContent = '';
+  applySearch('');
+  searchInput.focus();
+});
+
+// ── Category filters ──────────────────────────────────────────────────────────
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    updateGrid();
+  });
+});
+
+// ── Inquiry Modal ─────────────────────────────────────────────────────────────
+const inqBackdrop = document.getElementById('inqBackdrop');
+const inqClose    = document.getElementById('inqClose');
+const inqForm     = document.getElementById('inqForm');
+const inqCarBadge = document.getElementById('inqCarBadge');
+const inqVehicle  = document.getElementById('inqVehicle');
+const inqYear     = document.getElementById('inqYear');
+
+function openInquiry(carName, carYear) {
+  inqCarBadge.textContent = carName;
+  inqVehicle.value = carName;
+  // pre-select year if it matches an option
+  const yearOpts = Array.from(inqYear.options);
+  const match = yearOpts.find(o => o.value === carYear || o.text === carYear);
+  inqYear.value = match ? match.value : '';
+  inqBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('inqName').focus(), 250);
+}
+
+function closeInquiry() {
+  inqBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Open modal when any card is clicked (but not the "Inquire →" link itself)
+cards.forEach(card => {
+  card.addEventListener('click', e => {
+    if (e.target.closest('.sr-card__cta')) return; // let mailto links through
+    const name = card.querySelector('.sr-card__name').textContent.trim();
+    const spec = card.querySelector('.sr-card__spec').textContent.trim();
+    const yearMatch = spec.match(/\b(20\d{2})\b/);
+    openInquiry(name, yearMatch ? yearMatch[1] : '');
+  });
+});
+
+// Also wire the "Inquire →" links to open modal instead of mailto directly
+document.querySelectorAll('.sr-card__cta').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const card = link.closest('.sr-card');
+    const name = card.querySelector('.sr-card__name').textContent.trim();
+    const spec = card.querySelector('.sr-card__spec').textContent.trim();
+    const yearMatch = spec.match(/\b(20\d{2})\b/);
+    openInquiry(name, yearMatch ? yearMatch[1] : '');
+  });
+});
+
+inqClose.addEventListener('click', closeInquiry);
+inqBackdrop.addEventListener('click', e => { if (e.target === inqBackdrop) closeInquiry(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeInquiry(); });
+
+// Build and send email on form submit
+inqForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const name    = document.getElementById('inqName').value.trim();
+  const email   = document.getElementById('inqEmail').value.trim();
+  const phone   = document.getElementById('inqPhone').value.trim();
+  const budget  = document.getElementById('inqBudget').value;
+  const vehicle = document.getElementById('inqVehicle').value.trim();
+  const year    = document.getElementById('inqYear').value;
+  const colour  = document.getElementById('inqColor').value.trim();
+  const message = document.getElementById('inqMessage').value.trim();
+
+  if (!name || !email || !vehicle || !message) {
+    alert('Please fill in all required fields (Name, Email, Vehicle and Message).');
+    return;
+  }
+
+  const subject = `Vehicle Enquiry — ${vehicle}`;
+
+  const body = [
+    `LM AUTO DEALS — Vehicle Enquiry`,
+    `${'─'.repeat(40)}`,
+    ``,
+    `Vehicle of Interest : ${vehicle}`,
+    `Preferred Year      : ${year || 'Open to any'}`,
+    `Colour / Spec       : ${colour || 'Not specified'}`,
+    `Budget              : ${budget || 'Not specified'}`,
+    ``,
+    `── Client Details ──────────────────────`,
+    `Name    : ${name}`,
+    `Email   : ${email}`,
+    `Phone   : ${phone || 'Not provided'}`,
+    ``,
+    `── Message ─────────────────────────────`,
+    ``,
+    message,
+    ``,
+    `${'─'.repeat(40)}`,
+    `Sent via LM AUTO DEALS Showroom`,
+  ].join('\n');
+
+  const mailto = `mailto:lawrxnce9@gmail.com`
+    + `?subject=${encodeURIComponent(subject)}`
+    + `&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailto;
+  closeInquiry();
+});
+</script>
 </body>
 </html>
