@@ -106,6 +106,21 @@
     }
     .sr-search-clear:hover { color: var(--text); background: var(--border); }
     .sr-search-clear.hidden { display: none; }
+    .sr-browse-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 9px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 2px 0;
+      transition: color 0.15s;
+    }
+    .sr-browse-link:hover { color: var(--accent); }
 
     /* Suggestions dropdown */
     .sr-suggestions {
@@ -146,6 +161,341 @@
       background: #f4f7ff;
     }
     .sr-suggestion-item span { color: var(--muted); font-size: 0.8rem; }
+    .sr-suggestion-item strong { color: var(--text); font-weight: 700; }
+    .sr-sug-label { flex: 1; }
+    .sr-sug-type { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
+    .sr-no-suggestions {
+      padding: 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+
+    /* ── Wizard ── */
+    .wiz-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 600;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .wiz-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    .wiz-modal {
+      background: #fff;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 28px 72px rgba(0,0,0,0.22);
+      transform: translateY(18px) scale(0.97);
+      transition: transform 0.25s ease;
+      overflow: hidden;
+    }
+    .wiz-backdrop.open .wiz-modal { transform: translateY(0) scale(1); }
+
+    /* Progress bar */
+    .wiz-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .wiz-steps {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .wiz-step-pip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .wiz-step-pip .dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--muted);
+      background: #fff;
+      transition: all 0.2s;
+    }
+    .wiz-step-pip.active .dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .wiz-step-pip.done .dot {
+      background: #e8f0fe;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .wiz-step-pip.active { color: var(--text); }
+    .wiz-chevron { color: var(--border); font-size: 0.8rem; margin: 0 2px; }
+    .wiz-close-btn {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .wiz-close-btn:hover { background: var(--border); color: var(--text); }
+
+    /* Panel shared */
+    .wiz-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .wiz-panel.hidden { display: none; }
+
+    .wiz-panel-head {
+      padding: 20px 22px 12px;
+      flex-shrink: 0;
+    }
+    .wiz-brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0f5ff;
+      border: 1px solid #d0e0ff;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .wiz-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 0 0 3px;
+    }
+    .wiz-subtitle { font-size: 0.82rem; color: var(--muted); margin: 0; }
+
+    /* Model filter */
+    .wiz-model-filter {
+      padding: 0 22px 12px;
+      flex-shrink: 0;
+    }
+    .wiz-filter-input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .wiz-filter-input:focus { border-color: var(--accent); }
+
+    /* Models grid */
+    .wiz-models-scroll {
+      overflow-y: auto;
+      padding: 0 22px 20px;
+      flex: 1;
+    }
+    .wiz-models-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .wiz-model-btn {
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .wiz-model-btn:hover {
+      border-color: var(--accent);
+      background: #f0f5ff;
+      color: var(--accent);
+    }
+
+    /* Years grid */
+    .wiz-years-scroll {
+      overflow-y: auto;
+      padding: 0 22px 20px;
+      flex: 1;
+    }
+    .wiz-years-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .wiz-year-btn {
+      padding: 12px 6px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .wiz-year-btn:hover {
+      border-color: var(--accent);
+      background: #f0f5ff;
+      color: var(--accent);
+    }
+    .wiz-year-btn.any {
+      grid-column: 1 / -1;
+      background: var(--bg);
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.82rem;
+    }
+
+    /* Summary chip */
+    .wiz-summary-bar {
+      margin: 0 22px 16px;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .wiz-summary-bar .chip {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .wiz-summary-bar .sep { color: var(--muted); }
+
+    /* Form inside wizard */
+    .wiz-form-scroll {
+      overflow-y: auto;
+      padding: 0 22px 22px;
+      flex: 1;
+    }
+    .wiz-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 13px;
+    }
+    .wiz-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .wiz-label .req { color: var(--accent); }
+    .wiz-input, .wiz-textarea {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .wiz-input:focus, .wiz-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(27,109,214,0.09);
+    }
+    .wiz-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+    .wiz-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .wiz-send-btn {
+      width: 100%;
+      height: 48px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      transition: background 0.15s;
+    }
+    .wiz-send-btn:hover { background: #1555c0; }
+
+    /* Back button */
+    .wiz-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      font-size: 0.82rem;
+      font-family: inherit;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 10px 22px 14px;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+    .wiz-back:hover { color: var(--text); }
+
+    .wiz-note {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    @media (max-width: 540px) {
+      .wiz-backdrop { align-items: flex-end; padding: 0; }
+      .wiz-modal { border-radius: 20px 20px 0 0; max-height: 92vh; }
+      .wiz-years-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 420px) {
+      .wiz-pip-label { display: none; }
+    }
 
     /* Search result meta */
     .sr-search-meta {
@@ -625,6 +975,7 @@
           <div class="sr-suggestions hidden" id="suggestions"></div>
         </div>
         <div class="sr-search-meta" id="searchMeta"></div>
+        <button type="button" class="sr-browse-link" id="srBrowseBtn">🚘 Browse all brands →</button>
       </div>
     </div>
 
@@ -646,6 +997,121 @@
     </section>
 
   </main>
+
+  <!-- ── Car Wizard ── -->
+  <div class="wiz-backdrop" id="wizBackdrop">
+    <div class="wiz-modal">
+
+      <!-- Top bar -->
+      <div class="wiz-topbar">
+        <div class="wiz-steps">
+          <div class="wiz-step-pip active" id="wiz-p1">
+            <span class="dot">1</span>&nbsp;<span class="wiz-pip-label">Brand</span>
+          </div>
+          <span class="wiz-chevron">›</span>
+          <div class="wiz-step-pip" id="wiz-p2">
+            <span class="dot">2</span>&nbsp;<span class="wiz-pip-label">Model</span>
+          </div>
+          <span class="wiz-chevron">›</span>
+          <div class="wiz-step-pip" id="wiz-p3">
+            <span class="dot">3</span>&nbsp;<span class="wiz-pip-label">Year</span>
+          </div>
+          <span class="wiz-chevron">›</span>
+          <div class="wiz-step-pip" id="wiz-p4">
+            <span class="dot">4</span>&nbsp;<span class="wiz-pip-label">Request</span>
+          </div>
+        </div>
+        <button class="wiz-close-btn" id="wizClose">✕</button>
+      </div>
+
+      <!-- Step 1: Brand picker -->
+      <div class="wiz-panel" id="wizBrandPanel">
+        <div class="wiz-panel-head">
+          <h3 class="wiz-title">Select a Brand</h3>
+          <p class="wiz-subtitle">Choose the car manufacturer you're looking for</p>
+        </div>
+        <div class="wiz-model-filter">
+          <input class="wiz-filter-input" id="wizBrandFilter" type="text" placeholder="Search brands…" autocomplete="off"/>
+        </div>
+        <div class="wiz-models-scroll">
+          <div class="wiz-models-grid" id="wizBrandsGrid"></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Model picker -->
+      <div class="wiz-panel hidden" id="wizStep1">
+        <div class="wiz-panel-head">
+          <div class="wiz-brand-badge" id="wizBrandBadge">🚘 Brand</div>
+          <h3 class="wiz-title">Select a Model</h3>
+          <p class="wiz-subtitle">Choose the model you're interested in</p>
+        </div>
+        <div class="wiz-model-filter">
+          <input class="wiz-filter-input" id="wizModelFilter" type="text" placeholder="Filter models…" autocomplete="off"/>
+        </div>
+        <div class="wiz-models-scroll">
+          <div class="wiz-models-grid" id="wizModelsGrid"></div>
+        </div>
+        <button class="wiz-back" id="wizBackToBrand">← Back to Brands</button>
+      </div>
+
+      <!-- Step 3: Year picker -->
+      <div class="wiz-panel hidden" id="wizStep2">
+        <div class="wiz-panel-head">
+          <div class="wiz-brand-badge" id="wizModelBadge">Model</div>
+          <h3 class="wiz-title">Select a Year</h3>
+          <p class="wiz-subtitle">Which model year are you looking for?</p>
+        </div>
+        <div class="wiz-years-scroll">
+          <div class="wiz-years-grid" id="wizYearsGrid"></div>
+        </div>
+        <button class="wiz-back" id="wizBackToModel">← Back to Models</button>
+      </div>
+
+      <!-- Step 4: Send request -->
+      <div class="wiz-panel hidden" id="wizStep3">
+        <div class="wiz-panel-head">
+          <h3 class="wiz-title">Send Your Request</h3>
+          <p class="wiz-subtitle">We'll get back to you within 24 hours</p>
+        </div>
+        <div class="wiz-summary-bar" id="wizSummaryBar">
+          <span class="chip" id="wiz-s-brand"></span>
+          <span class="sep">›</span>
+          <span class="chip" id="wiz-s-model"></span>
+          <span class="sep">›</span>
+          <span class="chip" id="wiz-s-year"></span>
+        </div>
+        <div class="wiz-form-scroll">
+          <form id="wizForm" novalidate>
+            <div class="wiz-row">
+              <div class="wiz-field">
+                <label class="wiz-label" for="wizName">Full Name <span class="req">*</span></label>
+                <input class="wiz-input" id="wizName" type="text" placeholder="John Smith" required/>
+              </div>
+              <div class="wiz-field">
+                <label class="wiz-label" for="wizEmail">Email <span class="req">*</span></label>
+                <input class="wiz-input" id="wizEmail" type="email" placeholder="john@email.com" required/>
+              </div>
+            </div>
+            <div class="wiz-field">
+              <label class="wiz-label" for="wizPhone">Phone Number</label>
+              <input class="wiz-input" id="wizPhone" type="tel" placeholder="+1 555 000 0000"/>
+            </div>
+            <div class="wiz-field">
+              <label class="wiz-label" for="wizMessage">Additional Details <span class="req">*</span></label>
+              <textarea class="wiz-textarea" id="wizMessage" placeholder="Colour preference, trim level, budget, timeline…" required></textarea>
+            </div>
+            <button class="wiz-send-btn" type="submit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Send Request
+            </button>
+            <p class="wiz-note">Opens your email client with the request pre-filled.</p>
+          </form>
+        </div>
+        <button class="wiz-back" id="wizBackToYear">← Back to Year</button>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ── Inquiry Modal ── -->
   <div class="inq-backdrop" id="inqBackdrop" role="dialog" aria-modal="true" aria-labelledby="inqTitle">
@@ -848,39 +1314,110 @@ let activeQuery    = '';
 let focusedIdx     = -1;
 let suggestionItems = [];
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function highlight(text, q) {
+  if (!q) return text;
+  const idx = text.toLowerCase().indexOf(q.toLowerCase());
+  if (idx === -1) return text;
+  return (
+    text.slice(0, idx) +
+    '<strong>' + text.slice(idx, idx + q.length) + '</strong>' +
+    text.slice(idx + q.length)
+  );
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
 // ── Suggestion builder ────────────────────────────────────────────────────────
 function buildSuggestions(q) {
-  if (!q) return [];
-  const lower = q.toLowerCase();
-  const results = { brands: [], models: [], years: [] };
+  const lower = q.toLowerCase().trim();
+  if (!lower) return { brands: [], models: [], years: [] };
 
-  YEARS.forEach(y => {
-    if (y.startsWith(q)) results.years.push(y);
-  });
+  const prefixBrands = [], substringBrands = [];
+  const prefixModels = [], substringModels = [];
+  const years = [];
+  const seenModels = new Set();
 
-  carDB.forEach(({ brand, models }) => {
-    if (brand.toLowerCase().includes(lower)) {
-      results.brands.push(brand);
-    }
-    models.forEach(model => {
-      const full = `${brand} ${model}`;
-      if (model.toLowerCase().includes(lower) || full.toLowerCase().includes(lower)) {
-        if (!results.brands.includes(brand + ' — ' + model)) {
-          results.models.push({ label: full, brand, model });
-        }
+  // Years — prefix only
+  YEARS.forEach(y => { if (y.startsWith(q)) years.push(y); });
+
+  // Detect if the query exactly matches a brand (show all its models)
+  const exactBrand = carDB.find(b => b.brand.toLowerCase() === lower);
+
+  carDB.forEach(({ brand, models: modelList }) => {
+    const bl = brand.toLowerCase();
+
+    // Brand bucketing
+    if (bl.startsWith(lower))       prefixBrands.push(brand);
+    else if (bl.includes(lower))    substringBrands.push(brand);
+
+    // Model bucketing
+    modelList.forEach(model => {
+      const full  = `${brand} ${model}`;
+      const fl    = full.toLowerCase();
+      const ml    = model.toLowerCase();
+      if (seenModels.has(full)) return;
+
+      const isExact = exactBrand && brand === exactBrand.brand;
+      if (isExact || fl.startsWith(lower) || ml.startsWith(lower)) {
+        prefixModels.push({ label: full, brand, model });
+        seenModels.add(full);
+      } else if (fl.includes(lower)) {
+        substringModels.push({ label: full, brand, model });
+        seenModels.add(full);
       }
     });
   });
 
-  return results;
+  return {
+    brands : [...prefixBrands, ...substringBrands].slice(0, 5),
+    models : [...prefixModels, ...substringModels].slice(0, 8),
+    years  : years.slice(0, 4),
+  };
+}
+
+function attachSuggestionHandlers() {
+  suggestionItems = Array.from(suggestions.querySelectorAll('.sr-suggestion-item'));
+  focusedIdx = -1;
+  suggestionItems.forEach(item => {
+    item.addEventListener('mousedown', e => {
+      e.preventDefault();
+      const val  = item.dataset.value;
+      const type = item.dataset.type;
+      suggestions.classList.add('hidden');
+
+      if (type === 'brand') {
+        searchInput.value = val;
+        openInquiryDirect(val);
+      } else if (type === 'model') {
+        const brand = item.dataset.brand;
+        const modelName = item.dataset.modelName;
+        searchInput.value = val;
+        openInquiryDirect(brand);
+      } else {
+        searchInput.value = val;
+        applySearch(val);
+      }
+    });
+  });
 }
 
 function renderSuggestions(q) {
+  if (!q || q.trim().length < 1) {
+    suggestions.classList.add('hidden');
+    return;
+  }
+
   const data = buildSuggestions(q);
   const hasAny = data.brands.length || data.models.length || data.years.length;
 
-  if (!q || !hasAny) {
-    suggestions.classList.add('hidden');
+  if (!hasAny) {
+    suggestions.innerHTML = `<div class="sr-no-suggestions">No results for "<strong>${q}</strong>"</div>`;
+    suggestions.classList.remove('hidden');
+    suggestionItems = [];
     return;
   }
 
@@ -889,17 +1426,24 @@ function renderSuggestions(q) {
   if (data.years.length) {
     html += `<div class="sr-suggestions-group">
       <div class="sr-suggestions-heading">Year</div>
-      ${data.years.slice(0, 4).map(y =>
-        `<div class="sr-suggestion-item" data-value="${y}">📅 ${y}</div>`
+      ${data.years.map(y =>
+        `<div class="sr-suggestion-item" data-value="${y}">
+          <span>📅</span>
+          <span class="sr-sug-label">${highlight(y, q)}</span>
+        </div>`
       ).join('')}
     </div>`;
   }
 
   if (data.brands.length) {
     html += `<div class="sr-suggestions-group">
-      <div class="sr-suggestions-heading">Brand</div>
-      ${data.brands.slice(0, 5).map(b =>
-        `<div class="sr-suggestion-item" data-value="${b}">🚘 <strong>${b}</strong></div>`
+      <div class="sr-suggestions-heading">Brand — click to browse models</div>
+      ${data.brands.map(b =>
+        `<div class="sr-suggestion-item" data-value="${b}" data-type="brand">
+          <span>🚘</span>
+          <span class="sr-sug-label">${highlight(b, q)}</span>
+          <span class="sr-sug-type" style="color:var(--accent);font-weight:600">Browse →</span>
+        </div>`
       ).join('')}
     </div>`;
   }
@@ -907,26 +1451,19 @@ function renderSuggestions(q) {
   if (data.models.length) {
     html += `<div class="sr-suggestions-group">
       <div class="sr-suggestions-heading">Model</div>
-      ${data.models.slice(0, 6).map(m =>
-        `<div class="sr-suggestion-item" data-value="${m.label}">🏎️ ${m.label}</div>`
+      ${data.models.map(m =>
+        `<div class="sr-suggestion-item" data-value="${m.label}" data-type="model" data-brand="${m.brand}" data-model-name="${m.model}">
+          <span>🏎️</span>
+          <span class="sr-sug-label">${highlight(m.label, q)}</span>
+          <span class="sr-sug-type">${m.brand}</span>
+        </div>`
       ).join('')}
     </div>`;
   }
 
   suggestions.innerHTML = html;
   suggestions.classList.remove('hidden');
-
-  suggestionItems = Array.from(suggestions.querySelectorAll('.sr-suggestion-item'));
-  focusedIdx = -1;
-
-  suggestionItems.forEach(item => {
-    item.addEventListener('mousedown', e => {
-      e.preventDefault();
-      searchInput.value = item.dataset.value;
-      applySearch(item.dataset.value);
-      suggestions.classList.add('hidden');
-    });
-  });
+  attachSuggestionHandlers();
 }
 
 // ── Filter + search cards ────────────────────────────────────────────────────
@@ -937,6 +1474,8 @@ function applySearch(q) {
 }
 
 function updateGrid() {
+  if (!cards.length) return; // no inventory grid on this page
+
   let visible = 0;
 
   cards.forEach(card => {
@@ -950,56 +1489,72 @@ function updateGrid() {
 
   const hasQuery = activeQuery.length > 0;
 
-  if (visible === 0) {
-    emptyState.style.display = 'block';
-    if (hasQuery) {
-      const q = searchInput.value.trim();
-      emptyDesc.textContent = `We can source a ${q} for you. Send us a request and we'll get back to you.`;
-      requestBtn.href = `mailto:lawrxnce9@gmail.com?subject=Vehicle Request: ${encodeURIComponent(q)}`;
+  if (emptyState) {
+    if (visible === 0) {
+      emptyState.style.display = 'block';
+      const emptyDesc = document.getElementById('emptyDesc');
+      const requestBtn = document.getElementById('requestBtn');
+      if (hasQuery) {
+        const q = searchInput.value.trim();
+        if (emptyDesc) emptyDesc.textContent = `We can source a ${q} for you. Send us a request and we'll get back to you.`;
+        if (requestBtn) requestBtn.href = `mailto:lmautodeals1@gmail.com?subject=Vehicle Request: ${encodeURIComponent(q)}`;
+      } else {
+        if (emptyDesc) emptyDesc.textContent = `No vehicles match this filter.`;
+        if (requestBtn) requestBtn.href = `mailto:lmautodeals1@gmail.com?subject=Vehicle Request`;
+      }
     } else {
-      emptyDesc.textContent = `No vehicles match this filter.`;
-      requestBtn.href = `mailto:lawrxnce9@gmail.com?subject=Vehicle Request`;
+      emptyState.style.display = 'none';
     }
-  } else {
-    emptyState.style.display = 'none';
   }
 
-  const filterLabel = activeFilter === 'all' ? '' : ` · ${activeFilter}`;
-  countLabel.textContent = visible === totalCards
-    ? `${totalCards} vehicles`
-    : `${visible} of ${totalCards} vehicles${filterLabel}`;
+  if (countLabel) {
+    const filterLabel = activeFilter === 'all' ? '' : ` · ${activeFilter}`;
+    countLabel.textContent = visible === totalCards
+      ? `${totalCards} vehicles`
+      : `${visible} of ${totalCards} vehicles${filterLabel}`;
+  }
 
-  if (hasQuery && visible > 0) {
-    searchMeta.textContent = `${visible} match${visible !== 1 ? 'es' : ''} in current inventory`;
-  } else {
-    searchMeta.textContent = '';
+  if (searchMeta) {
+    if (hasQuery && visible > 0) {
+      searchMeta.textContent = `${visible} match${visible !== 1 ? 'es' : ''} in current inventory`;
+    } else {
+      searchMeta.textContent = '';
+    }
   }
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────
+const debouncedSuggest = debounce(q => renderSuggestions(q), 150);
+
 searchInput.addEventListener('input', () => {
   const q = searchInput.value;
-  renderSuggestions(q);
   applySearch(q);
+  debouncedSuggest(q);
+});
+
+searchInput.addEventListener('focus', () => {
+  if (searchInput.value.trim()) renderSuggestions(searchInput.value);
 });
 
 searchInput.addEventListener('keydown', e => {
-  if (!suggestionItems.length) return;
-  if (e.key === 'ArrowDown') {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (!suggestionItems.length) return;
     e.preventDefault();
-    focusedIdx = (focusedIdx + 1) % suggestionItems.length;
+    if (e.key === 'ArrowDown') focusedIdx = (focusedIdx + 1) % suggestionItems.length;
+    else                       focusedIdx = (focusedIdx - 1 + suggestionItems.length) % suggestionItems.length;
     suggestionItems.forEach((el, i) => el.classList.toggle('focused', i === focusedIdx));
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    focusedIdx = (focusedIdx - 1 + suggestionItems.length) % suggestionItems.length;
-    suggestionItems.forEach((el, i) => el.classList.toggle('focused', i === focusedIdx));
-  } else if (e.key === 'Enter' && focusedIdx >= 0) {
-    const val = suggestionItems[focusedIdx].dataset.value;
-    searchInput.value = val;
-    applySearch(val);
-    suggestions.classList.add('hidden');
+    suggestionItems[focusedIdx]?.scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    if (focusedIdx >= 0 && suggestionItems[focusedIdx]) {
+      e.preventDefault();
+      const val = suggestionItems[focusedIdx].dataset.value;
+      searchInput.value = val;
+      applySearch(val);
+      suggestions.classList.add('hidden');
+    }
   } else if (e.key === 'Escape') {
     suggestions.classList.add('hidden');
+    searchInput.blur();
   }
 });
 
@@ -1016,6 +1571,215 @@ clearBtn.addEventListener('click', () => {
   searchMeta.textContent = '';
   applySearch('');
   searchInput.focus();
+});
+
+// ── Wizard ────────────────────────────────────────────────────────────────────
+const wizBackdrop   = document.getElementById('wizBackdrop');
+const wizClose      = document.getElementById('wizClose');
+const wizBrandPanel = document.getElementById('wizBrandPanel');
+const wizStep1      = document.getElementById('wizStep1');
+const wizStep2      = document.getElementById('wizStep2');
+const wizStep3      = document.getElementById('wizStep3');
+const wizBrandBadge = document.getElementById('wizBrandBadge');
+const wizModelBadge = document.getElementById('wizModelBadge');
+const wizBrandsGrid = document.getElementById('wizBrandsGrid');
+const wizModelsGrid = document.getElementById('wizModelsGrid');
+const wizYearsGrid  = document.getElementById('wizYearsGrid');
+const wizBrandFilter= document.getElementById('wizBrandFilter');
+const wizModelFilter= document.getElementById('wizModelFilter');
+const wizForm       = document.getElementById('wizForm');
+const wizPips       = [
+  document.getElementById('wiz-p1'),
+  document.getElementById('wiz-p2'),
+  document.getElementById('wiz-p3'),
+  document.getElementById('wiz-p4'),
+];
+
+let wiz = { brand: null, model: null, year: null };
+
+function wizSetStep(n) {
+  [wizBrandPanel, wizStep1, wizStep2, wizStep3].forEach((p, i) => p.classList.toggle('hidden', i !== n - 1));
+  wizPips.forEach((pip, i) => {
+    pip.classList.toggle('active', i === n - 1);
+    pip.classList.toggle('done',   i < n - 1);
+  });
+}
+
+function renderBrandGrid(filter) {
+  const q = filter.toLowerCase();
+  const brands = q ? carDB.filter(b => b.brand.toLowerCase().includes(q)) : carDB;
+  wizBrandsGrid.innerHTML = brands.length
+    ? brands.map(b =>
+        `<button class="wiz-model-btn" type="button" data-brand="${b.brand}">${b.brand}</button>`
+      ).join('')
+    : `<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1">No brands match "${filter}"</p>`;
+
+  wizBrandsGrid.querySelectorAll('.wiz-model-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wiz.brand = btn.dataset.brand;
+      wizBrandBadge.textContent = '🚘 ' + wiz.brand;
+      wizModelFilter.value = '';
+      const entry = carDB.find(b => b.brand === wiz.brand);
+      const models = entry ? entry.models : [];
+      renderModelGrid(models, '');
+      wizModelFilter.oninput = () => renderModelGrid(models, wizModelFilter.value);
+      wizSetStep(2);
+    });
+  });
+}
+
+function openWizardBrandStep(initialFilter) {
+  wiz.brand = null;
+  wiz.model = null;
+  wiz.year  = null;
+  const q = initialFilter || '';
+  wizBrandFilter.value = q;
+  renderBrandGrid(q);
+  wizBrandFilter.oninput = () => renderBrandGrid(wizBrandFilter.value);
+  wizSetStep(1);
+  wizBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => wizBrandFilter.focus(), 200);
+}
+
+function openWizard(brandName) {
+  wiz.brand = brandName;
+  wiz.model = null;
+  wiz.year  = null;
+
+  wizBrandBadge.textContent = '🚘 ' + brandName;
+  wizModelFilter.value = '';
+
+  const entry = carDB.find(b => b.brand.toLowerCase() === brandName.toLowerCase());
+  const models = entry ? entry.models : [];
+  renderModelGrid(models, '');
+
+  wizModelFilter.oninput = () => renderModelGrid(models, wizModelFilter.value);
+
+  wizSetStep(2);
+  wizBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openWizardAtModel(brand, model) {
+  wiz.brand = brand;
+  wiz.model = model;
+  wiz.year  = null;
+  wizBrandBadge.textContent = '🚘 ' + brand;
+  wizModelBadge.textContent = '🏎️ ' + brand + ' ' + model;
+  renderYearGrid();
+  wizSetStep(3);
+  wizBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openInquiryDirect(brand) {
+  wiz.brand = brand;
+  wiz.model = 'Open to any';
+  wiz.year  = 'Open to any';
+  document.getElementById('wiz-s-brand').textContent = brand;
+  document.getElementById('wiz-s-model').textContent = 'Open to any';
+  document.getElementById('wiz-s-year').textContent  = 'Open to any';
+  document.getElementById('wizMessage').value =
+    `Hi, I am interested in a ${brand}. Please let me know what models and years are available along with pricing.`;
+  wizSetStep(4);
+  wizBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('wizName').focus(), 200);
+}
+
+function renderModelGrid(models, filter) {
+  const q = filter.toLowerCase();
+  const filtered = q ? models.filter(m => m.toLowerCase().includes(q)) : models;
+  wizModelsGrid.innerHTML = filtered.length
+    ? filtered.map(m =>
+        `<button class="wiz-model-btn" type="button" data-model="${m}">${m}</button>`
+      ).join('')
+    : `<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1">No models match "${filter}"</p>`;
+
+  wizModelsGrid.querySelectorAll('.wiz-model-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wiz.model = btn.dataset.model;
+      wizModelBadge.textContent = '🏎️ ' + wiz.brand + ' ' + wiz.model;
+      renderYearGrid();
+      wizSetStep(3);
+    });
+  });
+}
+
+function renderYearGrid() {
+  wizYearsGrid.innerHTML =
+    YEARS.map(y =>
+      `<button class="wiz-year-btn" type="button" data-year="${y}">${y}</button>`
+    ).join('') +
+    `<button class="wiz-year-btn any" type="button" data-year="Open to any">Open to any year</button>`;
+
+  wizYearsGrid.querySelectorAll('.wiz-year-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wiz.year = btn.dataset.year;
+      document.getElementById('wiz-s-brand').textContent = wiz.brand;
+      document.getElementById('wiz-s-model').textContent = wiz.model;
+      document.getElementById('wiz-s-year').textContent  = wiz.year;
+      document.getElementById('wizMessage').value =
+        `Hi, I am interested in a ${wiz.year} ${wiz.brand} ${wiz.model}. Please let me know availability and pricing.`;
+      wizSetStep(4);
+      setTimeout(() => document.getElementById('wizName').focus(), 200);
+    });
+  });
+}
+
+document.getElementById('wizBackToBrand').addEventListener('click', () => wizSetStep(1));
+document.getElementById('wizBackToModel').addEventListener('click', () => wizSetStep(2));
+document.getElementById('wizBackToYear').addEventListener('click',  () => wizSetStep(3));
+
+document.getElementById('srBrowseBtn').addEventListener('click', () => openWizardBrandStep());
+
+wizClose.addEventListener('click', closeWizard);
+wizBackdrop.addEventListener('click', e => { if (e.target === wizBackdrop) closeWizard(); });
+
+function closeWizard() {
+  wizBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+wizForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const name    = document.getElementById('wizName').value.trim();
+  const email   = document.getElementById('wizEmail').value.trim();
+  const phone   = document.getElementById('wizPhone').value.trim();
+  const message = document.getElementById('wizMessage').value.trim();
+
+  if (!name || !email || !message) {
+    alert('Please fill in Name, Email and Additional Details.');
+    return;
+  }
+
+  const subject = `Car Request — ${wiz.year} ${wiz.brand} ${wiz.model}`;
+  const body = [
+    `LM AUTO DEALS — Car Request`,
+    `${'─'.repeat(40)}`,
+    ``,
+    `Brand  : ${wiz.brand}`,
+    `Model  : ${wiz.model}`,
+    `Year   : ${wiz.year}`,
+    ``,
+    `── Client Details ──────────────────────`,
+    `Name   : ${name}`,
+    `Email  : ${email}`,
+    `Phone  : ${phone || 'Not provided'}`,
+    ``,
+    `── Message ─────────────────────────────`,
+    ``,
+    message,
+    ``,
+    `${'─'.repeat(40)}`,
+    `Sent via LM AUTO DEALS Showroom`,
+  ].join('\n');
+
+  window.location.href =
+    `mailto:lmautodeals1@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  closeWizard();
 });
 
 // ── Category filters ──────────────────────────────────────────────────────────
@@ -1078,7 +1842,7 @@ document.querySelectorAll('.sr-card__cta').forEach(link => {
 
 inqClose.addEventListener('click', closeInquiry);
 inqBackdrop.addEventListener('click', e => { if (e.target === inqBackdrop) closeInquiry(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeInquiry(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeInquiry(); closeWizard(); } });
 
 // Build and send email on form submit
 inqForm.addEventListener('submit', e => {
