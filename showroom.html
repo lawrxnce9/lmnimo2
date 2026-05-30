@@ -6,6 +6,15 @@
   <title>Showroom — LM AUTO DEALS</title>
   <link rel="stylesheet" href="styles.css"/>
   <style>
+    /* ── Lubricants button ── */
+    .sr-lub-btn {
+      display: inline-block;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .sr-lub-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .sr-lub-btn img { display: block; height: 80px; width: auto; object-fit: contain; }
+
     /* ── Header ── */
     .sr-header {
       position: sticky;
@@ -955,7 +964,9 @@
       <img src="images/homepage/IMG_2037 copy.PNG" alt="Back"/>
     </a>
     <span class="sr-logo">LM AUTODEALS</span>
-    <div style="width:52px"></div>
+    <a class="sr-lub-btn" href="lubricants.html">
+      <img src="images/homepage/lubricants.PNG" alt="Lubricants"/>
+    </a>
   </header>
 
   <main>

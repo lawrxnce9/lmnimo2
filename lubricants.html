@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Lubricants — LM AUTO DEALS</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    :root { --lub-navy: #1a2d5a; --lub-gold: #c9a227; }
+
+    /* ── Header ── */
+    .lub-header {
+      position: sticky; top: 0; z-index: 100;
+      background: #fff; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 60px;
+    }
+    .lub-back { display: inline-block; text-decoration: none; transition: opacity 0.15s, transform 0.15s; }
+    .lub-back:hover { opacity: 0.8; transform: translateX(-2px); }
+    .lub-back img { display: block; height: 60px; width: auto; object-fit: contain; }
+    .lub-logo { font-family: Palatino,'Palatino Linotype',Georgia,serif; font-style: italic; font-size: 1.1rem; letter-spacing: 0.1em; color: var(--text); }
+    .lub-showroom-link { font-size: 0.75rem; font-weight: 600; color: var(--muted); text-decoration: none; border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-family: inherit; transition: all 0.15s; }
+    .lub-showroom-link:hover { border-color: var(--lub-navy); color: var(--lub-navy); }
+
+    /* ── Hero ── */
+    .lub-hero { background: var(--lub-navy); padding: 56px 24px 52px; position: relative; overflow: hidden; }
+    .lub-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(201,162,39,0.09) 0%, transparent 70%); pointer-events: none; }
+    .lub-hero__inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+    .lub-hero__eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(201,162,39,0.55); margin-bottom: 12px; }
+    .lub-hero__title { display: flex; align-items: center; gap: 16px; margin: 0 0 14px; font-family: Palatino,'Palatino Linotype',Georgia,serif; font-weight: normal; font-style: italic; font-size: clamp(2.2rem,5vw,3.5rem); color: var(--lub-gold); letter-spacing: 0.05em; }
+    .lub-drop-svg { flex-shrink: 0; width: clamp(32px,4vw,46px); height: auto; }
+    .lub-hero__sub { margin: 0; font-size: 0.92rem; color: rgba(255,255,255,0.52); max-width: 520px; line-height: 1.7; }
+
+    /* ── Filters ── */
+    .lub-filters-wrap { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 60px; z-index: 90; }
+    .lub-filters { max-width: 1100px; margin: 0 auto; padding: 13px 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .lub-filter { padding: 6px 16px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 0.82rem; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 5px; }
+    .lub-filter svg { width: 13px; height: 13px; }
+    .lub-filter:hover { border-color: var(--lub-navy); color: var(--lub-navy); }
+    .lub-filter.active { background: var(--lub-navy); color: #fff; border-color: var(--lub-navy); }
+
+    /* ── Grid wrap ── */
+    .lub-grid-wrap { max-width: 1100px; margin: 0 auto; padding: 8px 24px 72px; }
+    .lub-section-title { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 32px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .lub-section-title svg { width: 15px; height: 15px; }
+    .lub-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+    /* ── Card ── */
+    .lub-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s; display: flex; flex-direction: column; }
+    .lub-card:hover { border-color: var(--lub-navy); box-shadow: 0 4px 20px rgba(26,45,90,0.1); transform: translateY(-2px); }
+    .lub-card__badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; border-radius: 4px; padding: 3px 9px; margin-bottom: 12px; width: fit-content; }
+    .lub-card__badge svg { width: 11px; height: 11px; }
+    .badge-engine  { background: #fff8ec; color: #b45309; }
+    .badge-gear    { background: #eff6ff; color: #1d4ed8; }
+    .badge-brake   { background: #fef2f2; color: #b91c1c; }
+    .badge-coolant { background: #ecfdf5; color: #065f46; }
+    .badge-grease  { background: #f5f3ff; color: #6d28d9; }
+    .lub-card__name { font-size: 0.95rem; font-weight: 700; margin: 0 0 5px; letter-spacing: -0.1px; }
+    .lub-card__spec { font-size: 0.8rem; color: var(--muted); margin: 0 0 16px; line-height: 1.55; }
+    .lub-card__footer { margin-top: auto; padding-top: 13px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .lub-card__grade { font-size: 0.76rem; font-weight: 700; color: var(--text); font-family: 'Courier New', monospace; }
+    .lub-card__cta { font-size: 0.78rem; font-weight: 600; color: var(--lub-navy); }
+
+    /* ── About banner ── */
+    .lub-about { position: relative; width: 100%; min-height: 340px; background-image: url('images/homepage/IMG_2040 copy.PNG'); background-size: cover; background-position: center; background-attachment: fixed; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+    .lub-about__overlay { position: absolute; inset: 0; background: rgba(26,45,90,0.72); }
+    .lub-about__content { position: relative; z-index: 1; max-width: 560px; padding: 64px 32px; color: #fff; }
+    .lub-about__eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(201,162,39,0.65); margin-bottom: 12px; }
+    .lub-about__heading { font-family: Palatino,'Palatino Linotype',Georgia,serif; font-style: italic; font-size: clamp(1.6rem,3.5vw,2.4rem); font-weight: normal; line-height: 1.3; margin: 0 0 14px; color: var(--lub-gold); }
+    .lub-about__body { font-size: 0.9rem; line-height: 1.75; color: rgba(255,255,255,0.7); }
+
+    /* ── Inquiry modal ── */
+    .lub-inq-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+    .lub-inq-backdrop.open { opacity: 1; pointer-events: auto; }
+    .lub-inq-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 500px; max-height: 92vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,0.2); transform: translateY(20px) scale(0.98); transition: transform 0.25s ease; }
+    .lub-inq-backdrop.open .lub-inq-modal { transform: translateY(0) scale(1); }
+    .lub-inq-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 24px 24px 0; gap: 12px; }
+    .lub-inq-badge { display: inline-flex; align-items: center; gap: 6px; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px; padding: 5px 12px; font-size: 0.74rem; font-weight: 600; color: var(--lub-navy); margin-bottom: 8px; }
+    .lub-inq-title { font-size: 1.25rem; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.3px; }
+    .lub-inq-sub { font-size: 0.82rem; color: var(--muted); margin: 0; }
+    .lub-inq-close { flex-shrink: 0; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: transparent; font-size: 1rem; cursor: pointer; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; }
+    .lub-inq-close:hover { background: var(--border); color: var(--text); }
+    .lub-inq-divider { height: 1px; background: var(--border); margin: 16px 24px; }
+    .lub-inq-body { padding: 0 24px 24px; }
+    .lub-inq-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .lub-inq-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .lub-inq-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+    .lub-inq-label .req { color: var(--lub-navy); margin-left: 2px; }
+    .lub-inq-input, .lub-inq-select, .lub-inq-textarea { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: inherit; color: var(--text); background: #fff; outline: none; transition: border-color 0.15s, box-shadow 0.15s; width: 100%; }
+    .lub-inq-input:focus, .lub-inq-select:focus, .lub-inq-textarea:focus { border-color: var(--lub-navy); box-shadow: 0 0 0 3px rgba(26,45,90,0.09); }
+    .lub-inq-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+    .lub-inq-textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
+    .lub-inq-send { width: 100%; height: 48px; background: var(--lub-navy); color: #fff; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 700; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; transition: background 0.15s; }
+    .lub-inq-send:hover { background: #223672; }
+    .lub-inq-send svg { width: 16px; height: 16px; }
+    .lub-inq-note { text-align: center; font-size: 0.72rem; color: var(--muted); margin-top: 10px; }
+
+    /* ── Footer ── */
+    .lub-footer { text-align: center; padding: 20px; font-size: 0.82rem; color: var(--muted); border-top: 1px solid var(--border); }
+    .lub-footer-motto { margin: 0 0 10px; font-family: Palatino,'Palatino Linotype',Georgia,serif; font-style: italic; font-size: 1rem; color: var(--text); }
+    .lub-footer-ig, .lub-footer-tt, .lub-footer-em { display: inline-flex; align-items: center; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .lub-footer-ig:hover { color: #c13584; } .lub-footer-tt:hover { color: #010101; } .lub-footer-em:hover { color: var(--accent); }
+    .lub-fi { width: 20px; height: 20px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) { .lub-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px) {
+      .lub-header { padding: 0 16px; }
+      .lub-hero { padding: 36px 16px 32px; }
+      .lub-filters { padding: 10px 16px; }
+      .lub-grid-wrap { padding: 4px 16px 60px; }
+      .lub-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      .lub-inq-backdrop { align-items: flex-end; padding: 0; }
+      .lub-inq-modal { border-radius: 20px 20px 0 0; }
+      .lub-inq-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="lub-header">
+    <a class="lub-back" href="showroom.html">
+      <img src="images/homepage/IMG_2037 copy.PNG" alt="Back to Showroom"/>
+    </a>
+    <span class="lub-logo">LM AUTODEALS</span>
+    <a class="lub-showroom-link" href="showroom.html">Showroom →</a>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="lub-hero">
+      <div class="lub-hero__inner">
+        <p class="lub-hero__eyebrow">LM Auto Deals</p>
+        <h1 class="lub-hero__title">
+          <svg class="lub-drop-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/>
+          </svg>
+          Lubricants
+        </h1>
+        <p class="lub-hero__sub">Premium engine oils, gear oils, brake fluids, coolants and greases — sourced globally for every vehicle type.</p>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="lub-filters-wrap">
+      <div class="lub-filters">
+        <button class="lub-filter active" data-cat="all">All Products</button>
+        <button class="lub-filter" data-cat="engine">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/></svg>
+          Engine Oil
+        </button>
+        <button class="lub-filter" data-cat="gear">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Gear Oil
+        </button>
+        <button class="lub-filter" data-cat="brake">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          Brake Fluid
+        </button>
+        <button class="lub-filter" data-cat="coolant">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+          Coolant
+        </button>
+        <button class="lub-filter" data-cat="grease">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Grease
+        </button>
+      </div>
+    </div>
+
+    <div class="lub-grid-wrap">
+
+      <!-- Engine Oil -->
+      <div class="lub-category-block" data-cat="engine">
+        <div class="lub-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/></svg>
+          Engine Oil
+        </div>
+        <div class="lub-grid">
+          <div class="lub-card" data-product="5W-30 Full Synthetic Engine Oil">
+            <div class="lub-card__badge badge-engine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/></svg> Engine Oil</div>
+            <h3 class="lub-card__name">5W-30 Full Synthetic</h3>
+            <p class="lub-card__spec">High-performance full synthetic oil for modern petrol and diesel engines. Excellent low-temperature protection and fuel economy.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">5W-30</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="10W-40 Semi-Synthetic Engine Oil">
+            <div class="lub-card__badge badge-engine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/></svg> Engine Oil</div>
+            <h3 class="lub-card__name">10W-40 Semi-Synthetic</h3>
+            <p class="lub-card__spec">Versatile semi-synthetic blend for a wide range of petrol and light diesel engines. Good thermal stability and wear protection.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">10W-40</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="15W-40 Mineral Engine Oil">
+            <div class="lub-card__badge badge-engine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/></svg> Engine Oil</div>
+            <h3 class="lub-card__name">15W-40 Mineral</h3>
+            <p class="lub-card__spec">Conventional mineral oil for older petrol and diesel engines. Reliable protection under normal operating conditions.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">15W-40</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="0W-20 Full Synthetic Engine Oil">
+            <div class="lub-card__badge badge-engine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/></svg> Engine Oil</div>
+            <h3 class="lub-card__name">0W-20 Full Synthetic</h3>
+            <p class="lub-card__spec">Ultra-low viscosity synthetic for modern fuel-efficient and turbocharged engines. Reduces friction for improved performance.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">0W-20</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gear Oil -->
+      <div class="lub-category-block" data-cat="gear">
+        <div class="lub-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Gear Oil
+        </div>
+        <div class="lub-grid">
+          <div class="lub-card" data-product="GL-4 75W-90 Gear Oil">
+            <div class="lub-card__badge badge-gear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Gear Oil</div>
+            <h3 class="lub-card__name">GL-4 75W-90 Gear Oil</h3>
+            <p class="lub-card__spec">Fully synthetic gear oil for manual gearboxes, transaxles and transfer cases. Smooth shifting across all temperatures.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">GL-4 · 75W-90</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="GL-5 80W-140 Gear Oil">
+            <div class="lub-card__badge badge-gear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Gear Oil</div>
+            <h3 class="lub-card__name">GL-5 80W-140 Gear Oil</h3>
+            <p class="lub-card__spec">Heavy-duty oil for differentials and hypoid axles under high-torque conditions. Superior anti-wear and extreme pressure protection.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">GL-5 · 80W-140</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="Automatic Transmission Fluid (ATF)">
+            <div class="lub-card__badge badge-gear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Gear Oil</div>
+            <h3 class="lub-card__name">Automatic Transmission Fluid</h3>
+            <p class="lub-card__spec">Multi-vehicle ATF for automatic transmissions, power steering and hydraulic systems. Smooth and consistent performance.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">ATF Dexron VI</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brake Fluid -->
+      <div class="lub-category-block" data-cat="brake">
+        <div class="lub-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          Brake Fluid
+        </div>
+        <div class="lub-grid">
+          <div class="lub-card" data-product="DOT 3 Brake Fluid">
+            <div class="lub-card__badge badge-brake"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Brake Fluid</div>
+            <h3 class="lub-card__name">DOT 3 Brake Fluid</h3>
+            <p class="lub-card__spec">Standard glycol-based fluid for most conventional braking systems. Dry boiling point 205°C minimum.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">DOT 3</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="DOT 4 Brake Fluid">
+            <div class="lub-card__badge badge-brake"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Brake Fluid</div>
+            <h3 class="lub-card__name">DOT 4 Brake Fluid</h3>
+            <p class="lub-card__spec">Higher performance fluid for vehicles with ABS and traction control. Dry boiling point 230°C. Most widely used specification.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">DOT 4</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="DOT 5.1 Brake Fluid">
+            <div class="lub-card__badge badge-brake"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Brake Fluid</div>
+            <h3 class="lub-card__name">DOT 5.1 Brake Fluid</h3>
+            <p class="lub-card__spec">High-performance non-silicone fluid for heavy-duty and high-temperature braking. Dry boiling point 270°C.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">DOT 5.1</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coolant -->
+      <div class="lub-category-block" data-cat="coolant">
+        <div class="lub-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#065f46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+          Coolant
+        </div>
+        <div class="lub-grid">
+          <div class="lub-card" data-product="Antifreeze Concentrate">
+            <div class="lub-card__badge badge-coolant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg> Coolant</div>
+            <h3 class="lub-card__name">Antifreeze Concentrate</h3>
+            <p class="lub-card__spec">Full-strength ethylene glycol concentrate. Mix with water for protection down to -37°C. Compatible with all metals and alloys.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">Concentrate</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="Pre-Mixed Coolant (50/50)">
+            <div class="lub-card__badge badge-coolant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg> Coolant</div>
+            <h3 class="lub-card__name">Pre-Mixed Coolant</h3>
+            <p class="lub-card__spec">Ready-to-use 50/50 coolant blend with distilled water. No dilution required. Guards against freeze, boil-over and corrosion.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">50 / 50</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="Long-Life OAT Coolant">
+            <div class="lub-card__badge badge-coolant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg> Coolant</div>
+            <h3 class="lub-card__name">Long-Life OAT Coolant</h3>
+            <p class="lub-card__spec">Organic acid technology coolant with up to 5-year / 250,000 km service life. Ideal for modern aluminium engines.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">OAT · 5-Year</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grease -->
+      <div class="lub-category-block" data-cat="grease">
+        <div class="lub-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Grease
+        </div>
+        <div class="lub-grid">
+          <div class="lub-card" data-product="Multipurpose Lithium Grease">
+            <div class="lub-card__badge badge-grease"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Grease</div>
+            <h3 class="lub-card__name">Multipurpose Grease</h3>
+            <p class="lub-card__spec">Lithium-based NLGI 2 grease for general automotive and industrial use. Good water resistance and mechanical stability.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">NLGI 2</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="Wheel Bearing Grease">
+            <div class="lub-card__badge badge-grease"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Grease</div>
+            <h3 class="lub-card__name">Wheel Bearing Grease</h3>
+            <p class="lub-card__spec">High-temperature lithium complex grease for hub bearings, ball joints and chassis components under heavy load.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">Hi-Temp · NLGI 2</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+          <div class="lub-card" data-product="CV Joint Grease">
+            <div class="lub-card__badge badge-grease"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Grease</div>
+            <h3 class="lub-card__name">CV Joint Grease</h3>
+            <p class="lub-card__spec">Molybdenum disulfide grease for CV joints and splined shafts. Extreme-pressure additive package for long-term protection.</p>
+            <div class="lub-card__footer"><span class="lub-card__grade">Moly EP · NLGI 2</span><span class="lub-card__cta">Inquire →</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- About banner -->
+    <section class="lub-about">
+      <div class="lub-about__overlay"></div>
+      <div class="lub-about__content">
+        <p class="lub-about__eyebrow">Quality You Can Trust</p>
+        <h2 class="lub-about__heading">The Right Lubricant for Every Drive</h2>
+        <p class="lub-about__body">We source and supply premium lubricants suited to every vehicle — from daily drivers to high-performance machines. All products meet or exceed OEM specifications.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Inquiry Modal -->
+  <div class="lub-inq-backdrop" id="lubInqBackdrop">
+    <div class="lub-inq-modal">
+      <div class="lub-inq-header">
+        <div>
+          <div class="lub-inq-badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 8 4 12.5 4 15.5a8 8 0 0 0 16 0C20 12.5 17.5 8 12 2z"/></svg>
+            <span id="lubInqBadge">Product Enquiry</span>
+          </div>
+          <h2 class="lub-inq-title">Make an Enquiry</h2>
+          <p class="lub-inq-sub">Fill in your details and we'll get back to you within 24 hours.</p>
+        </div>
+        <button class="lub-inq-close" id="lubInqClose">✕</button>
+      </div>
+      <div class="lub-inq-divider"></div>
+      <div class="lub-inq-body">
+        <form id="lubInqForm" novalidate>
+          <div class="lub-inq-row">
+            <div class="lub-inq-field">
+              <label class="lub-inq-label" for="lubName">Full Name <span class="req">*</span></label>
+              <input class="lub-inq-input" id="lubName" type="text" placeholder="John Smith" required/>
+            </div>
+            <div class="lub-inq-field">
+              <label class="lub-inq-label" for="lubEmail">Email <span class="req">*</span></label>
+              <input class="lub-inq-input" id="lubEmail" type="email" placeholder="john@email.com" required/>
+            </div>
+          </div>
+          <div class="lub-inq-row">
+            <div class="lub-inq-field">
+              <label class="lub-inq-label" for="lubPhone">Phone Number</label>
+              <input class="lub-inq-input" id="lubPhone" type="tel" placeholder="+1 555 000 0000"/>
+            </div>
+            <div class="lub-inq-field">
+              <label class="lub-inq-label" for="lubQty">Volume / Quantity</label>
+              <select class="lub-inq-select" id="lubQty">
+                <option value="">Select…</option>
+                <option>1 Litre</option>
+                <option>4 Litres</option>
+                <option>5 Litres</option>
+                <option>20 Litres</option>
+                <option>205 L Drum</option>
+                <option>Custom / Bulk</option>
+              </select>
+            </div>
+          </div>
+          <div class="lub-inq-field">
+            <label class="lub-inq-label" for="lubMessage">Message / Requirements <span class="req">*</span></label>
+            <textarea class="lub-inq-textarea" id="lubMessage" placeholder="Vehicle type, quantity needed, delivery location…" required></textarea>
+          </div>
+          <button class="lub-inq-send" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Enquiry
+          </button>
+          <p class="lub-inq-note">Opens your email client with the enquiry pre-filled. No data stored.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lub-footer">
+    <p class="lub-footer-motto">Turning Dreams Into Drive 🏎️</p>
+    <a class="lub-footer-em" href="mailto:lmautodeals1@gmail.com" aria-label="Email">
+      <svg class="lub-fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+    </a>
+    &nbsp;·&nbsp;
+    <a class="lub-footer-tt" href="https://www.tiktok.com/@lm_autodeals?_r=1&_t=ZS-96ksG3uw8u8" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+      <svg class="lub-fi" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+    </a>
+    &nbsp;·&nbsp;
+    <a class="lub-footer-ig" href="https://www.instagram.com/lm_autodeals" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg class="lub-fi" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+  </footer>
+
+<script>
+// ── Category filter ───────────────────────────────────────────────────────────
+const lubFilters = document.querySelectorAll('.lub-filter');
+const lubBlocks  = document.querySelectorAll('.lub-category-block');
+
+lubFilters.forEach(btn => {
+  btn.addEventListener('click', () => {
+    lubFilters.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    lubBlocks.forEach(block => {
+      block.style.display = (cat === 'all' || block.dataset.cat === cat) ? '' : 'none';
+    });
+  });
+});
+
+// ── Inquiry modal ─────────────────────────────────────────────────────────────
+const lubInqBackdrop = document.getElementById('lubInqBackdrop');
+const lubInqClose    = document.getElementById('lubInqClose');
+const lubInqBadge    = document.getElementById('lubInqBadge');
+const lubInqForm     = document.getElementById('lubInqForm');
+let currentProduct   = '';
+
+function openLubInquiry(product) {
+  currentProduct = product;
+  lubInqBadge.textContent = product;
+  document.getElementById('lubMessage').value =
+    `Hi, I am interested in ${product}. Please provide availability, pricing and volume options.`;
+  lubInqBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('lubName').focus(), 250);
+}
+
+function closeLubInquiry() {
+  lubInqBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.lub-card').forEach(card => {
+  card.addEventListener('click', () => openLubInquiry(card.dataset.product));
+});
+
+lubInqClose.addEventListener('click', closeLubInquiry);
+lubInqBackdrop.addEventListener('click', e => { if (e.target === lubInqBackdrop) closeLubInquiry(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLubInquiry(); });
+
+lubInqForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const name    = document.getElementById('lubName').value.trim();
+  const email   = document.getElementById('lubEmail').value.trim();
+  const phone   = document.getElementById('lubPhone').value.trim();
+  const qty     = document.getElementById('lubQty').value;
+  const message = document.getElementById('lubMessage').value.trim();
+
+  if (!name || !email || !message) {
+    alert('Please fill in Name, Email and Message.');
+    return;
+  }
+
+  const subject = `Lubricant Enquiry — ${currentProduct}`;
+  const body = [
+    `LM AUTO DEALS — Lubricant Enquiry`,
+    `${'─'.repeat(40)}`,
+    ``,
+    `Product  : ${currentProduct}`,
+    `Quantity : ${qty || 'Not specified'}`,
+    ``,
+    `── Client Details ──────────────────────`,
+    `Name     : ${name}`,
+    `Email    : ${email}`,
+    `Phone    : ${phone || 'Not provided'}`,
+    ``,
+    `── Message ─────────────────────────────`,
+    ``,
+    message,
+    ``,
+    `${'─'.repeat(40)}`,
+    `Sent via LM AUTO DEALS Lubricants`,
+  ].join('\n');
+
+  window.location.href =
+    `mailto:lmautodeals1@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  closeLubInquiry();
+});
+</script>
+</body>
+</html>
