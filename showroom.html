@@ -1030,7 +1030,7 @@
           <div class="sr-suggestions hidden" id="suggestions"></div>
         </div>
         <div class="sr-search-meta" id="searchMeta"></div>
-        <button type="button" class="sr-browse-link" id="srBrowseBtn">🚘 Browse all brands →</button>
+        <button type="button" class="sr-browse-link" id="srBrowseBtn">Browse all brands →</button>
       </div>
     </div>
 
@@ -1096,7 +1096,7 @@
       <!-- Step 2: Model picker -->
       <div class="wiz-panel hidden" id="wizStep1">
         <div class="wiz-panel-head">
-          <div class="wiz-brand-badge" id="wizBrandBadge">🚘 Brand</div>
+          <div class="wiz-brand-badge" id="wizBrandBadge">Brand</div>
           <h3 class="wiz-title">Select a Model</h3>
           <p class="wiz-subtitle">Choose the model you're interested in</p>
         </div>
@@ -1259,7 +1259,7 @@
   </div>
 
   <footer class="sr-footer">
-    <p class="sr-footer-motto">Turning Dreams Into Drive 🏎️</p>
+    <p class="sr-footer-motto">Turning Dreams Into Drive </p>
     <a class="sr-footer-em" href="mailto:lmautodeals1@gmail.com" aria-label="Email us">
       <svg class="sr-em-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -1495,7 +1495,7 @@ function renderSuggestions(q) {
       <div class="sr-suggestions-heading">Brand — click to browse models</div>
       ${data.brands.map(b =>
         `<div class="sr-suggestion-item" data-value="${b}" data-type="brand">
-          <span>🚘</span>
+          <span></span>
           <span class="sr-sug-label">${highlight(b, q)}</span>
           <span class="sr-sug-type" style="color:var(--accent);font-weight:600">Browse →</span>
         </div>`
@@ -1508,7 +1508,7 @@ function renderSuggestions(q) {
       <div class="sr-suggestions-heading">Model</div>
       ${data.models.map(m =>
         `<div class="sr-suggestion-item" data-value="${m.label}" data-type="model" data-brand="${m.brand}" data-model-name="${m.model}">
-          <span>🏎️</span>
+          <span></span>
           <span class="sr-sug-label">${highlight(m.label, q)}</span>
           <span class="sr-sug-type">${m.brand}</span>
         </div>`
@@ -1720,8 +1720,8 @@ function openWizardAtModel(brand, model) {
   wiz.brand = brand;
   wiz.model = model;
   wiz.year  = null;
-  wizBrandBadge.textContent = '🚘 ' + brand;
-  wizModelBadge.textContent = '🏎️ ' + brand + ' ' + model;
+  wizBrandBadge.textContent = ' ' + brand;
+  wizModelBadge.textContent = ' ' + brand + ' ' + model;
   renderYearGrid();
   wizSetStep(3);
   wizBackdrop.classList.add('open');
@@ -1755,7 +1755,7 @@ function renderModelGrid(models, filter) {
   wizModelsGrid.querySelectorAll('.wiz-model-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       wiz.model = btn.dataset.model;
-      wizModelBadge.textContent = '🏎️ ' + wiz.brand + ' ' + wiz.model;
+      wizModelBadge.textContent = ' ' + wiz.brand + ' ' + wiz.model;
       renderYearGrid();
       wizSetStep(3);
     });
