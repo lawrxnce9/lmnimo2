@@ -823,7 +823,48 @@
           </div>
           <div class="lub-inq-field">
             <label class="lub-inq-label" for="lubPhone">Phone Number</label>
-            <input class="lub-inq-input" id="lubPhone" type="tel" placeholder="+1 555 000 0000"/>
+            <div class="phone-input-wrap">
+              <select class="phone-code-select" id="lubPhoneCode">
+                <option value="+233">GH +233</option>
+                <option value="+1">US +1</option>
+                <option value="+1-CA">CA +1</option>
+                <option value="+44">GB +44</option>
+                <option value="+49">DE +49</option>
+                <option value="+33">FR +33</option>
+                <option value="+39">IT +39</option>
+                <option value="+34">ES +34</option>
+                <option value="+31">NL +31</option>
+                <option value="+41">CH +41</option>
+                <option value="+46">SE +46</option>
+                <option value="+47">NO +47</option>
+                <option value="+45">DK +45</option>
+                <option value="+48">PL +48</option>
+                <option value="+90">TR +90</option>
+                <option value="+52">MX +52</option>
+                <option value="+55">BR +55</option>
+                <option value="+54">AR +54</option>
+                <option value="+57">CO +57</option>
+                <option value="+56">CL +56</option>
+                <option value="+234">NG +234</option>
+                <option value="+27">ZA +27</option>
+                <option value="+254">KE +254</option>
+                <option value="+251">ET +251</option>
+                <option value="+20">EG +20</option>
+                <option value="+971">AE +971</option>
+                <option value="+966">SA +966</option>
+                <option value="+974">QA +974</option>
+                <option value="+965">KW +965</option>
+                <option value="+91">IN +91</option>
+                <option value="+86">CN +86</option>
+                <option value="+81">JP +81</option>
+                <option value="+82">KR +82</option>
+                <option value="+65">SG +65</option>
+                <option value="+92">PK +92</option>
+                <option value="+61">AU +61</option>
+                <option value="+64">NZ +64</option>
+              </select>
+              <input class="phone-number-input" id="lubPhone" type="tel" placeholder="000 000 0000"/>
+            </div>
           </div>
           <div class="lub-inq-field">
             <label class="lub-inq-label" for="lubProduct">Product of Interest <span class="req">*</span></label>
@@ -1054,7 +1095,9 @@
     e.preventDefault();
     const name    = document.getElementById('lubName').value.trim();
     const email   = document.getElementById('lubEmail').value.trim();
-    const phone   = document.getElementById('lubPhone').value.trim();
+    const phoneNum = document.getElementById('lubPhone').value.trim();
+    const phoneCode = document.getElementById('lubPhoneCode').value.replace('-CA','');
+    const phone = phoneNum ? `${phoneCode} ${phoneNum}` : '';
     const product = document.getElementById('lubProduct').value.trim();
     const message = document.getElementById('lubMessage').value.trim();
 
