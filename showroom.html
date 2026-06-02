@@ -1497,7 +1497,6 @@ function renderSuggestions(q) {
       <div class="sr-suggestions-heading">Year</div>
       ${data.years.map(y =>
         `<div class="sr-suggestion-item" data-value="${y}">
-          <span>📅</span>
           <span class="sr-sug-label">${highlight(y, q)}</span>
         </div>`
       ).join('')}
@@ -1702,7 +1701,7 @@ function renderBrandGrid(filter) {
   wizBrandsGrid.querySelectorAll('.wiz-model-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       wiz.brand = btn.dataset.brand;
-      wizBrandBadge.textContent = '🚘 ' + wiz.brand;
+      wizBrandBadge.textContent = wiz.brand;
       wizModelFilter.value = '';
       const entry = carDB.find(b => b.brand === wiz.brand);
       const models = entry ? entry.models : [];
@@ -1732,7 +1731,7 @@ function openWizard(brandName) {
   wiz.model = null;
   wiz.year  = null;
 
-  wizBrandBadge.textContent = '🚘 ' + brandName;
+  wizBrandBadge.textContent = brandName;
   wizModelFilter.value = '';
 
   const entry = carDB.find(b => b.brand.toLowerCase() === brandName.toLowerCase());
@@ -1750,8 +1749,8 @@ function openWizardAtModel(brand, model) {
   wiz.brand = brand;
   wiz.model = model;
   wiz.year  = null;
-  wizBrandBadge.textContent = ' ' + brand;
-  wizModelBadge.textContent = ' ' + brand + ' ' + model;
+  wizBrandBadge.textContent = brand;
+  wizModelBadge.textContent = brand + ' ' + model;
   renderYearGrid();
   wizSetStep(3);
   wizBackdrop.classList.add('open');
@@ -1785,7 +1784,7 @@ function renderModelGrid(models, filter) {
   wizModelsGrid.querySelectorAll('.wiz-model-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       wiz.model = btn.dataset.model;
-      wizModelBadge.textContent = ' ' + wiz.brand + ' ' + wiz.model;
+      wizModelBadge.textContent = wiz.brand + ' ' + wiz.model;
       renderYearGrid();
       wizSetStep(3);
     });
