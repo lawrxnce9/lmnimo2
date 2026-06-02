@@ -1151,45 +1151,7 @@
             <div class="wiz-field">
               <label class="wiz-label" for="wizPhone">Phone Number</label>
               <div class="phone-input-wrap">
-                <select class="phone-code-select" id="wizPhoneCode">
-                  <option value="+233">GH +233</option>
-                  <option value="+1">US +1</option>
-                  <option value="+1-CA">CA +1</option>
-                  <option value="+44">GB +44</option>
-                  <option value="+49">DE +49</option>
-                  <option value="+33">FR +33</option>
-                  <option value="+39">IT +39</option>
-                  <option value="+34">ES +34</option>
-                  <option value="+31">NL +31</option>
-                  <option value="+41">CH +41</option>
-                  <option value="+46">SE +46</option>
-                  <option value="+47">NO +47</option>
-                  <option value="+45">DK +45</option>
-                  <option value="+48">PL +48</option>
-                  <option value="+90">TR +90</option>
-                  <option value="+52">MX +52</option>
-                  <option value="+55">BR +55</option>
-                  <option value="+54">AR +54</option>
-                  <option value="+57">CO +57</option>
-                  <option value="+56">CL +56</option>
-                  <option value="+234">NG +234</option>
-                  <option value="+27">ZA +27</option>
-                  <option value="+254">KE +254</option>
-                  <option value="+251">ET +251</option>
-                  <option value="+20">EG +20</option>
-                  <option value="+971">AE +971</option>
-                  <option value="+966">SA +966</option>
-                  <option value="+974">QA +974</option>
-                  <option value="+965">KW +965</option>
-                  <option value="+91">IN +91</option>
-                  <option value="+86">CN +86</option>
-                  <option value="+81">JP +81</option>
-                  <option value="+82">KR +82</option>
-                  <option value="+65">SG +65</option>
-                  <option value="+92">PK +92</option>
-                  <option value="+61">AU +61</option>
-                  <option value="+64">NZ +64</option>
-                </select>
+                <select class="phone-code-select" id="wizPhoneCode"></select>
                 <input class="phone-number-input" id="wizPhone" type="tel" placeholder="000 000 0000"/>
               </div>
             </div>
@@ -1246,45 +1208,7 @@
             <div class="inq-field">
               <label class="inq-label" for="inqPhone">Phone Number</label>
               <div class="phone-input-wrap">
-                <select class="phone-code-select" id="inqPhoneCode">
-                  <option value="+233">GH +233</option>
-                  <option value="+1">US +1</option>
-                  <option value="+1-CA">CA +1</option>
-                  <option value="+44">GB +44</option>
-                  <option value="+49">DE +49</option>
-                  <option value="+33">FR +33</option>
-                  <option value="+39">IT +39</option>
-                  <option value="+34">ES +34</option>
-                  <option value="+31">NL +31</option>
-                  <option value="+41">CH +41</option>
-                  <option value="+46">SE +46</option>
-                  <option value="+47">NO +47</option>
-                  <option value="+45">DK +45</option>
-                  <option value="+48">PL +48</option>
-                  <option value="+90">TR +90</option>
-                  <option value="+52">MX +52</option>
-                  <option value="+55">BR +55</option>
-                  <option value="+54">AR +54</option>
-                  <option value="+57">CO +57</option>
-                  <option value="+56">CL +56</option>
-                  <option value="+234">NG +234</option>
-                  <option value="+27">ZA +27</option>
-                  <option value="+254">KE +254</option>
-                  <option value="+251">ET +251</option>
-                  <option value="+20">EG +20</option>
-                  <option value="+971">AE +971</option>
-                  <option value="+966">SA +966</option>
-                  <option value="+974">QA +974</option>
-                  <option value="+965">KW +965</option>
-                  <option value="+91">IN +91</option>
-                  <option value="+86">CN +86</option>
-                  <option value="+81">JP +81</option>
-                  <option value="+82">KR +82</option>
-                  <option value="+65">SG +65</option>
-                  <option value="+92">PK +92</option>
-                  <option value="+61">AU +61</option>
-                  <option value="+64">NZ +64</option>
-                </select>
+                <select class="phone-code-select" id="inqPhoneCode"></select>
                 <input class="phone-number-input" id="inqPhone" type="tel" placeholder="000 000 0000"/>
               </div>
             </div>
@@ -1913,7 +1837,7 @@ wizForm.addEventListener('submit', e => {
   const name    = document.getElementById('wizName').value.trim();
   const email   = document.getElementById('wizEmail').value.trim();
   const phoneNum = document.getElementById('wizPhone').value.trim();
-  const phoneCode = document.getElementById('wizPhoneCode').value.replace('-CA','');
+  const phoneCode = document.getElementById('wizPhoneCode').value;
   const phone = phoneNum ? `${phoneCode} ${phoneNum}` : '';
   const message = document.getElementById('wizMessage').value.trim();
 
@@ -2019,7 +1943,7 @@ inqForm.addEventListener('submit', e => {
   const name    = document.getElementById('inqName').value.trim();
   const email   = document.getElementById('inqEmail').value.trim();
   const phoneNum = document.getElementById('inqPhone').value.trim();
-  const phoneCode = document.getElementById('inqPhoneCode').value.replace('-CA','');
+  const phoneCode = document.getElementById('inqPhoneCode').value;
   const phone = phoneNum ? `${phoneCode} ${phoneNum}` : '';
   const budget  = document.getElementById('inqBudget').value;
   const vehicle = document.getElementById('inqVehicle').value.trim();
@@ -2063,6 +1987,71 @@ inqForm.addEventListener('submit', e => {
   window.location.href = mailto;
   closeInquiry();
 });
+
+// ── Populate all country code selects ────────────────────────────────────────
+(function(){
+  const cc=[
+    ['+233','Ghana'],['+93','Afghanistan'],['+355','Albania'],['+213','Algeria'],
+    ['+376','Andorra'],['+244','Angola'],['+1268','Antigua & Barbuda'],['+54','Argentina'],
+    ['+374','Armenia'],['+297','Aruba'],['+61','Australia'],['+43','Austria'],
+    ['+994','Azerbaijan'],['+1242','Bahamas'],['+973','Bahrain'],['+880','Bangladesh'],
+    ['+1246','Barbados'],['+375','Belarus'],['+32','Belgium'],['+501','Belize'],
+    ['+229','Benin'],['+975','Bhutan'],['+591','Bolivia'],['+387','Bosnia & Herzegovina'],
+    ['+267','Botswana'],['+55','Brazil'],['+673','Brunei'],['+359','Bulgaria'],
+    ['+226','Burkina Faso'],['+257','Burundi'],['+855','Cambodia'],['+237','Cameroon'],
+    ['+1','Canada'],['+238','Cape Verde'],['+236','Central African Rep.'],['+235','Chad'],
+    ['+56','Chile'],['+86','China'],['+57','Colombia'],['+269','Comoros'],
+    ['+682','Cook Islands'],['+506','Costa Rica'],['+385','Croatia'],['+53','Cuba'],
+    ['+357','Cyprus'],['+420','Czech Republic'],['+243','DR Congo'],['+45','Denmark'],
+    ['+253','Djibouti'],['+1767','Dominica'],['+1809','Dominican Republic'],['+670','East Timor'],
+    ['+593','Ecuador'],['+20','Egypt'],['+503','El Salvador'],['+240','Equatorial Guinea'],
+    ['+291','Eritrea'],['+372','Estonia'],['+268','Eswatini'],['+251','Ethiopia'],
+    ['+679','Fiji'],['+358','Finland'],['+33','France'],['+241','Gabon'],
+    ['+220','Gambia'],['+995','Georgia'],['+49','Germany'],['+350','Gibraltar'],
+    ['+30','Greece'],['+299','Greenland'],['+1473','Grenada'],['+502','Guatemala'],
+    ['+224','Guinea'],['+245','Guinea-Bissau'],['+592','Guyana'],['+509','Haiti'],
+    ['+504','Honduras'],['+852','Hong Kong'],['+36','Hungary'],['+354','Iceland'],
+    ['+91','India'],['+62','Indonesia'],['+98','Iran'],['+964','Iraq'],
+    ['+353','Ireland'],['+972','Israel'],['+39','Italy'],['+225','Ivory Coast'],
+    ['+1876','Jamaica'],['+81','Japan'],['+962','Jordan'],['+7','Kazakhstan'],
+    ['+254','Kenya'],['+686','Kiribati'],['+965','Kuwait'],['+996','Kyrgyzstan'],
+    ['+856','Laos'],['+371','Latvia'],['+961','Lebanon'],['+266','Lesotho'],
+    ['+231','Liberia'],['+218','Libya'],['+423','Liechtenstein'],['+370','Lithuania'],
+    ['+352','Luxembourg'],['+853','Macau'],['+261','Madagascar'],['+265','Malawi'],
+    ['+60','Malaysia'],['+960','Maldives'],['+223','Mali'],['+356','Malta'],
+    ['+692','Marshall Islands'],['+222','Mauritania'],['+230','Mauritius'],['+52','Mexico'],
+    ['+691','Micronesia'],['+373','Moldova'],['+377','Monaco'],['+976','Mongolia'],
+    ['+382','Montenegro'],['+212','Morocco'],['+258','Mozambique'],['+95','Myanmar'],
+    ['+264','Namibia'],['+977','Nepal'],['+31','Netherlands'],['+64','New Zealand'],
+    ['+505','Nicaragua'],['+227','Niger'],['+234','Nigeria'],['+850','North Korea'],
+    ['+389','North Macedonia'],['+47','Norway'],['+968','Oman'],['+92','Pakistan'],
+    ['+680','Palau'],['+970','Palestine'],['+507','Panama'],['+675','Papua New Guinea'],
+    ['+595','Paraguay'],['+51','Peru'],['+63','Philippines'],['+48','Poland'],
+    ['+351','Portugal'],['+1787','Puerto Rico'],['+974','Qatar'],['+242','Rep. of Congo'],
+    ['+40','Romania'],['+7','Russia'],['+250','Rwanda'],['+1869','Saint Kitts & Nevis'],
+    ['+1758','Saint Lucia'],['+1784','Saint Vincent'],['+685','Samoa'],
+    ['+239','Sao Tome & Principe'],['+966','Saudi Arabia'],['+221','Senegal'],
+    ['+381','Serbia'],['+248','Seychelles'],['+232','Sierra Leone'],['+65','Singapore'],
+    ['+421','Slovakia'],['+386','Slovenia'],['+677','Solomon Islands'],['+252','Somalia'],
+    ['+27','South Africa'],['+82','South Korea'],['+211','South Sudan'],['+34','Spain'],
+    ['+94','Sri Lanka'],['+249','Sudan'],['+597','Suriname'],['+46','Sweden'],
+    ['+41','Switzerland'],['+963','Syria'],['+886','Taiwan'],['+992','Tajikistan'],
+    ['+255','Tanzania'],['+66','Thailand'],['+228','Togo'],['+676','Tonga'],
+    ['+1868','Trinidad & Tobago'],['+216','Tunisia'],['+90','Turkey'],['+993','Turkmenistan'],
+    ['+688','Tuvalu'],['+256','Uganda'],['+380','Ukraine'],['+971','United Arab Emirates'],
+    ['+44','United Kingdom'],['+1','United States'],['+598','Uruguay'],['+998','Uzbekistan'],
+    ['+678','Vanuatu'],['+58','Venezuela'],['+84','Vietnam'],['+967','Yemen'],
+    ['+260','Zambia'],['+263','Zimbabwe']
+  ];
+  document.querySelectorAll('.phone-code-select').forEach(sel => {
+    cc.forEach(([code, name]) => {
+      const o = document.createElement('option');
+      o.value = code;
+      o.textContent = name + ' ' + code;
+      sel.appendChild(o);
+    });
+  });
+})();
 </script>
 </body>
 </html>
