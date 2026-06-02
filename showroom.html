@@ -8,12 +8,19 @@
   <style>
     /* ── Lubricants button ── */
     .sr-lub-btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       text-decoration: none;
-      transition: opacity 0.15s, transform 0.15s;
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      overflow: hidden;
+      transition: border-color 0.15s, transform 0.15s;
     }
-    .sr-lub-btn:hover { opacity: 0.85; transform: translateY(-1px); }
-    .sr-lub-btn img { display: block; height: 70px; width: auto; object-fit: contain; }
+    .sr-lub-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .sr-lub-btn img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
     /* ── Header ── */
     .sr-header {
@@ -966,7 +973,6 @@
     /* Mobile */
     @media (max-width: 560px) {
       .sr-header { padding: 0 14px; }
-      .sr-lub-btn img { height: 52px; }
       .sr-search-section { padding: 18px 14px 14px; }
       .sr-intro { padding: 20px 14px 14px; flex-direction: column; align-items: flex-start; }
       .sr-filters { padding: 12px 14px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -987,7 +993,6 @@
     /* Small phones */
     @media (max-width: 400px) {
       .sr-header { height: 54px; padding: 0 10px; }
-      .sr-lub-btn img { height: 48px; }
       .wiz-topbar { padding: 12px 14px 10px; }
       .wiz-step-pip { gap: 2px; font-size: 0.6rem; }
       .wiz-step-pip .dot { width: 18px; height: 18px; font-size: 0.58rem; }
@@ -1008,7 +1013,7 @@
     <a class="sr-back" href="index.html" aria-label="Back">&#8592;</a>
     <img src="logo.png" alt="LM Auto Deals" style="height:52px;width:auto;object-fit:contain;display:block;"/>
     <a class="sr-lub-btn" href="lubricants.html">
-      <img src="images/homepage/oil.PNG" alt="Lubricants"/>
+      <img src="images/homepage/oilicon.PNG" alt="Lubricants"/>
     </a>
   </header>
 
