@@ -29,17 +29,19 @@
       height: 60px;
     }
     .sr-back {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       text-decoration: none;
-      transition: opacity 0.15s, transform 0.15s;
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s;
     }
-    .sr-back:hover { opacity: 0.8; transform: translateX(-2px); }
-    .sr-back img {
-      display: block;
-      height: 70px;
-      width: auto;
-      object-fit: contain;
-    }
+    .sr-back:hover { border-color: var(--accent); color: var(--accent); background: #f0f5ff; transform: translateX(-2px); }
     .sr-logo {
       font-family: Palatino, 'Palatino Linotype', Georgia, serif;
       font-style: italic;
@@ -964,7 +966,6 @@
     /* Mobile */
     @media (max-width: 560px) {
       .sr-header { padding: 0 14px; }
-      .sr-back img { height: 52px; }
       .sr-lub-btn img { height: 52px; }
       .sr-search-section { padding: 18px 14px 14px; }
       .sr-intro { padding: 20px 14px 14px; flex-direction: column; align-items: flex-start; }
@@ -986,7 +987,6 @@
     /* Small phones */
     @media (max-width: 400px) {
       .sr-header { height: 54px; padding: 0 10px; }
-      .sr-back img { height: 48px; }
       .sr-lub-btn img { height: 48px; }
       .wiz-topbar { padding: 12px 14px 10px; }
       .wiz-step-pip { gap: 2px; font-size: 0.6rem; }
@@ -1005,9 +1005,7 @@
 
   <!-- Header -->
   <header class="sr-header">
-    <a class="sr-back" href="index.html">
-      <img src="images/homepage/IMG_2037 copy.PNG" alt="Back"/>
-    </a>
+    <a class="sr-back" href="index.html" aria-label="Back">&#8592;</a>
     <img src="logo.png" alt="LM Auto Deals" style="height:52px;width:auto;object-fit:contain;display:block;"/>
     <a class="sr-lub-btn" href="lubricants.html">
       <img src="images/homepage/oil.PNG" alt="Lubricants"/>

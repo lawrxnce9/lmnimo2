@@ -20,17 +20,19 @@
       height: 60px;
     }
     .sr-back {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       text-decoration: none;
-      transition: opacity 0.15s, transform 0.15s;
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s;
     }
-    .sr-back:hover { opacity: 0.8; transform: translateX(-2px); }
-    .sr-back img {
-      display: block;
-      height: 60px;
-      width: auto;
-      object-fit: contain;
-    }
+    .sr-back:hover { border-color: var(--accent); color: var(--accent); background: #f0f5ff; transform: translateX(-2px); }
 
     /* ── Footer (matches showroom.html) ── */
     .sr-footer {
@@ -450,7 +452,6 @@
     }
     @media (max-width: 560px) {
       .sr-header { padding: 0 14px; height: 54px; }
-      .sr-back img { height: 52px; }
       .lub-page-header { height: 220px; }
       .lub-section-inner { padding: 0 16px; }
       .lub-section { padding: 52px 0; }
@@ -463,7 +464,6 @@
     }
     @media (max-width: 400px) {
       .sr-header { height: 50px; padding: 0 10px; }
-      .sr-back img { height: 46px; }
     }
 
     /* ── Product Detail Modal ── */
@@ -612,9 +612,7 @@
 
   <!-- Header (identical pattern to showroom.html) -->
   <header class="sr-header">
-    <a class="sr-back" href="showroom.html">
-      <img src="images/homepage/IMG_2037 copy.PNG" alt="Back to Showroom"/>
-    </a>
+    <a class="sr-back" href="showroom.html" aria-label="Back">&#8592;</a>
     <img src="logo.png" alt="LM Auto Deals" style="height:52px;width:auto;object-fit:contain;display:block;"/>
     <div style="width:60px;"></div>
   </header>
