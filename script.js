@@ -1,3 +1,17 @@
+// ── Full-screen height fix for mobile browsers ────────────────────────────────
+// Browsers subtract their chrome (address bar, nav bar) from 100vh.
+// This sets --vh to the real pixel height so the hero fills the full screen.
+(function setFullHeight() {
+  function update() {
+    document.documentElement.style.setProperty('--vh', window.innerHeight + 'px');
+  }
+  update();
+  window.addEventListener('resize', update);
+  window.addEventListener('orientationchange', function () {
+    setTimeout(update, 150); // short delay for orientation to settle
+  });
+})();
+
 (function () {
   const hero = document.getElementById('heroSlideshow');
   if (!hero) return;
