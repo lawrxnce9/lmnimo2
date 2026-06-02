@@ -1288,6 +1288,11 @@
   </footer>
 
 <script>
+// ── Redirect to homescreen on page refresh ───────────────────────────────────
+if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+  window.location.replace('index.html');
+}
+
 // ── Comprehensive car database ──────────────────────────────────────────────
 const carDB = [
   { brand: "Acura",           models: ["ILX","TLX","RDX","MDX","NSX","Integra"] },
@@ -1452,13 +1457,15 @@ function attachSuggestionHandlers() {
       suggestions.classList.add('hidden');
 
       if (type === 'brand') {
-        searchInput.value = val;
-        openInquiryDirect(val);
+        searchInput.value = '';
+        suggestions.classList.add('hidden');
+        openWizard(val);
       } else if (type === 'model') {
         const brand = item.dataset.brand;
         const modelName = item.dataset.modelName;
-        searchInput.value = val;
-        openInquiryDirect(brand);
+        searchInput.value = '';
+        suggestions.classList.add('hidden');
+        openWizardAtModel(brand, modelName);
       } else {
         searchInput.value = val;
         applySearch(val);
@@ -1607,12 +1614,28 @@ searchInput.addEventListener('keydown', e => {
     suggestionItems.forEach((el, i) => el.classList.toggle('focused', i === focusedIdx));
     suggestionItems[focusedIdx]?.scrollIntoView({ block: 'nearest' });
   } else if (e.key === 'Enter') {
+    e.preventDefault();
+    suggestions.classList.add('hidden');
     if (focusedIdx >= 0 && suggestionItems[focusedIdx]) {
-      e.preventDefault();
-      const val = suggestionItems[focusedIdx].dataset.value;
-      searchInput.value = val;
-      applySearch(val);
-      suggestions.classList.add('hidden');
+      const focused = suggestionItems[focusedIdx];
+      const val  = focused.dataset.value;
+      const type = focused.dataset.type;
+      searchInput.value = '';
+      if (type === 'brand') {
+        openWizard(val);
+      } else if (type === 'model') {
+        openWizardAtModel(focused.dataset.brand, focused.dataset.modelName);
+      } else {
+        searchInput.value = val;
+        applySearch(val);
+      }
+    } else {
+      // No suggestion focused — open wizard filtered to whatever was typed
+      const q = searchInput.value.trim();
+      if (q) {
+        searchInput.value = '';
+        openWizardBrandStep(q);
+      }
     }
   } else if (e.key === 'Escape') {
     suggestions.classList.add('hidden');

@@ -634,7 +634,7 @@
           <h2 class="lub-section-title">Premium Synthetic Range</h2>
           <div class="lub-title-bar"></div>
         </div>
-        <p class="lub-products-meta">Showing: 4 High-Performance Grades</p>
+        <p class="lub-products-meta"></p>
         <div class="lub-grid">
 
           <!-- Card 1 — Castrol EDGE -->
@@ -814,6 +814,11 @@
   </div>
 
 <script>
+  // ── Redirect to homescreen on page refresh ─────────────────────────────────
+  if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+    window.location.replace('index.html');
+  }
+
   // ── Product data — fill in details here when ready ──────────────────────────
   const lubProducts = {
     'gt-z-ultra': {
