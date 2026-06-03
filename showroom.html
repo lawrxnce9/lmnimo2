@@ -1006,6 +1006,10 @@
       .inq-row { grid-template-columns: 1fr; }
     }
 
+    /* ── Field error ──────────────────────────────────────────────────────── */
+    .field-error { display: none; color: #e02020; font-size: 0.72rem; font-weight: 600; margin-top: 4px; }
+    .field-error.visible { display: block; }
+
     /* ── Channel Picker Modal ─────────────────────────────────────────────── */
     .ch-backdrop {
       display: none; position: fixed; inset: 0;
@@ -1179,6 +1183,7 @@
               <div class="wiz-field">
                 <label class="wiz-label" for="wizEmail">Email <span class="req">*</span></label>
                 <input class="wiz-input" id="wizEmail" type="email" placeholder="john@email.com" required/>
+                <span class="field-error" id="wizEmailErr">Email incorrect</span>
               </div>
             </div>
             <div class="wiz-field">
@@ -1233,6 +1238,7 @@
             <div class="inq-field">
               <label class="inq-label" for="inqEmail">Email Address <span class="req">*</span></label>
               <input class="inq-input" id="inqEmail" type="email" placeholder="john@email.com" required/>
+              <span class="field-error" id="inqEmailErr">Email incorrect</span>
             </div>
           </div>
 
@@ -1877,6 +1883,11 @@ wizForm.addEventListener('submit', e => {
     alert('Please fill in Name, Email and Additional Details.');
     return;
   }
+  if (!isValidEmail(email)) {
+    document.getElementById('wizEmailErr').classList.add('visible');
+    document.getElementById('wizEmail').focus();
+    return;
+  }
 
   const subject = `Car Request — ${wiz.year} ${wiz.brand} ${wiz.model}`;
   const body = [
@@ -1988,6 +1999,11 @@ inqForm.addEventListener('submit', e => {
     alert('Please fill in all required fields (Name, Email, Vehicle and Message).');
     return;
   }
+  if (!isValidEmail(email)) {
+    document.getElementById('inqEmailErr').classList.add('visible');
+    document.getElementById('inqEmail').focus();
+    return;
+  }
 
   const subject = `Vehicle Enquiry — ${vehicle}`;
 
@@ -2085,6 +2101,26 @@ inqForm.addEventListener('submit', e => {
     });
   });
 })();
+
+// ── Email validation ──────────────────────────────────────────────────────
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+function wireEmailValidation(inputId, errId) {
+  const input = document.getElementById(inputId);
+  const err   = document.getElementById(errId);
+  function check() {
+    const val = input.value.trim();
+    if (val && !isValidEmail(val)) { err.classList.add('visible'); }
+    else { err.classList.remove('visible'); }
+  }
+  input.addEventListener('blur', check);
+  input.addEventListener('input', () => { if (err.classList.contains('visible')) check(); });
+}
+
+wireEmailValidation('wizEmail', 'wizEmailErr');
+wireEmailValidation('inqEmail', 'inqEmailErr');
 
 // ── Channel Picker ────────────────────────────────────────────────────────
 const WA_NUMBER = '17348827921';

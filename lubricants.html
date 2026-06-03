@@ -610,6 +610,10 @@
       .lub-detail-actions .lub-btn-gold { width: 100%; text-align: center; }
     }
 
+    /* ── Field error ──────────────────────────────────────────────────────── */
+    .field-error { display: none; color: #e02020; font-size: 0.72rem; font-weight: 600; margin-top: 4px; }
+    .field-error.visible { display: block; }
+
     /* ── Channel Picker Modal ─────────────────────────────────────────────── */
     .ch-backdrop {
       display: none; position: fixed; inset: 0;
@@ -916,6 +920,7 @@
             <div class="lub-inq-field">
               <label class="lub-inq-label" for="lubEmail">Email <span class="req">*</span></label>
               <input class="lub-inq-input" id="lubEmail" type="email" placeholder="john@email.com" required/>
+              <span class="field-error" id="lubEmailErr">Email incorrect</span>
             </div>
           </div>
           <div class="lub-inq-field">
@@ -1239,6 +1244,11 @@
       alert('Please fill in all required fields.');
       return;
     }
+    if (!isValidEmail(email)) {
+      document.getElementById('lubEmailErr').classList.add('visible');
+      document.getElementById('lubEmail').focus();
+      return;
+    }
 
     const subject = `Lubricant Enquiry — ${product}`;
     const body = [
@@ -1336,6 +1346,25 @@
       });
     });
   })();
+
+// ── Email validation ──────────────────────────────────────────────────────
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+function wireEmailValidation(inputId, errId) {
+  const input = document.getElementById(inputId);
+  const err   = document.getElementById(errId);
+  function check() {
+    const val = input.value.trim();
+    if (val && !isValidEmail(val)) { err.classList.add('visible'); }
+    else { err.classList.remove('visible'); }
+  }
+  input.addEventListener('blur', check);
+  input.addEventListener('input', () => { if (err.classList.contains('visible')) check(); });
+}
+
+wireEmailValidation('lubEmail', 'lubEmailErr');
 
 // ── Channel Picker ────────────────────────────────────────────────────────
 const WA_NUMBER = '17348827921';
