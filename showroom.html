@@ -713,19 +713,13 @@
     .sr-about {
       position: relative;
       width: 100%;
-      min-height: 480px;
-      background-image: url('images/homepage/aboutus.PNG');
-      background-size: cover;
-      background-position: center top;
-      background-attachment: scroll;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       text-align: center;
       overflow: hidden;
     }
-    @media (min-width: 769px) {
-      .sr-about { min-height: 540px; background-position: center center; }
+    .sr-about__bg {
+      display: block;
+      width: 100%;
+      height: auto;
     }
     .sr-about__overlay {
       position: absolute;
@@ -733,10 +727,16 @@
       background: rgba(0, 0, 0, 0.58);
     }
     .sr-about__content {
-      position: relative;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       z-index: 1;
       max-width: 640px;
-      padding: 64px 32px;
+      margin: 0 auto;
+      padding: 32px;
       color: #fff;
     }
     .sr-about__eyebrow {
@@ -1087,6 +1087,7 @@
    
     <!-- About Us -->
     <section class="sr-about">
+      <img src="images/homepage/aboutus.PNG" alt="LM Auto Deals showroom" class="sr-about__bg"/>
       <div class="sr-about__overlay"></div>
       <div class="sr-about__content">
         <p class="sr-about__eyebrow">About Us</p>
