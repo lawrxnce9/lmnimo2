@@ -36,6 +36,16 @@
       padding: 0 24px;
       height: 60px;
     }
+    .sr-header__logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      pointer-events: none;
+    }
     .sr-back {
       display: inline-flex;
       align-items: center;
@@ -703,16 +713,19 @@
     .sr-about {
       position: relative;
       width: 100%;
-      min-height: 420px;
+      min-height: 480px;
       background-image: url('images/homepage/aboutus.PNG');
       background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+      background-position: center top;
+      background-attachment: scroll;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       overflow: hidden;
+    }
+    @media (min-width: 769px) {
+      .sr-about { min-height: 540px; background-position: center center; }
     }
     .sr-about__overlay {
       position: absolute;
@@ -967,10 +980,6 @@
     }
 
     /* Small tablet / large phone (landscape) */
-    @media (max-width: 768px) {
-      .sr-about { background-attachment: scroll; }
-    }
-
     /* Mobile */
     @media (max-width: 560px) {
       .sr-header { padding: 0 14px; }
@@ -1045,7 +1054,7 @@
   <!-- Header -->
   <header class="sr-header">
     <a class="sr-back" href="index.html" aria-label="Back">&#8592;</a>
-    <img src="logo.png" alt="LM Auto Deals" style="height:52px;width:auto;object-fit:contain;display:block;"/>
+    <img src="logo.png" alt="LM Auto Deals" class="sr-header__logo"/>
     <a class="sr-lub-btn" href="lubricants.html">
       <img src="images/homepage/oilicon.PNG" alt="Lubricants"/>
     </a>
