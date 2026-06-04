@@ -713,12 +713,10 @@
     .sr-about {
       position: relative;
       width: 100%;
-      min-height: 460px;
-      background-image: url('images/homepage/aboutus.PNG');
-      background-size: contain;
-      background-repeat: no-repeat;
+      min-height: 480px;
+      background-image: url('images/homepage/aboutus2.jpg');
+      background-size: cover;
       background-position: center center;
-      background-color: #0d0d0d;
       background-attachment: scroll;
       display: flex;
       align-items: center;
@@ -727,12 +725,12 @@
       overflow: hidden;
     }
     @media (min-width: 769px) {
-      .sr-about { min-height: min(80vw, 700px); }
+      .sr-about { min-height: 540px; }
     }
     .sr-about__overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.38);
+      background: rgba(0, 0, 0, 0.50);
     }
     .sr-about__content {
       position: relative;
