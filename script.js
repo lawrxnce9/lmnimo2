@@ -33,13 +33,15 @@
   const themeColorMeta = document.getElementById('themeColor');
 
   function applyTint(index) {
-    const tint = slides[index].getAttribute('data-tint');
-    if (!tint) return;
-    // Set on :root so both the hero and the page canvas (html background,
-    // which paints the notch/safe-area strip) share the same tint.
-    document.documentElement.style.setProperty('--hero-tint', tint);
-    // Keep the mobile status-bar / notch color in sync with the slide.
-    if (themeColorMeta) themeColorMeta.setAttribute('content', tint);
+    const slide = slides[index];
+    // Use the slide's own flat background-color as the single source of truth
+    // so the page canvas, the notch/safe-area strip and the browser chrome are
+    // the exact same color as the hero body — one continuous field, no edge
+    // seam. Fall back to data-tint if a slide has no inline background-color.
+    const color = slide.style.backgroundColor || slide.getAttribute('data-tint');
+    if (!color) return;
+    document.documentElement.style.setProperty('--hero-tint', color);
+    if (themeColorMeta) themeColorMeta.setAttribute('content', color);
   }
 
   function goTo(index) {
