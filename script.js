@@ -30,9 +30,16 @@
   const AUTO_MS = 2000;
   let autoTimer = null;
 
+  const themeColorMeta = document.getElementById('themeColor');
+
   function applyTint(index) {
     const tint = slides[index].getAttribute('data-tint');
-    if (tint) hero.style.setProperty('--hero-tint', tint);
+    if (!tint) return;
+    // Set on :root so both the hero and the page canvas (html background,
+    // which paints the notch/safe-area strip) share the same tint.
+    document.documentElement.style.setProperty('--hero-tint', tint);
+    // Keep the mobile status-bar / notch color in sync with the slide.
+    if (themeColorMeta) themeColorMeta.setAttribute('content', tint);
   }
 
   function goTo(index) {
